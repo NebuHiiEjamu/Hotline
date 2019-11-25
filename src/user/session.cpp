@@ -7,18 +7,6 @@ Session::Session(uint16 id, PalaceConnectionPtr connection):
 {
 }
 
-uint64 Session::getAccess()
-{
-	LockGuard lock(mutex);
-	return access.to_ullong();
-}
-
-uint32 Session::getAccessEx()
-{
-	LockGuard lock(mutex);
-	return static_cast<uint32>(accessEx.to_ulong());
-}
-
 uint16 Session::getId() const
 {
 	return id;
@@ -57,18 +45,6 @@ void Session::setIcon(uint16 newIcon)
 {
 	LockGuard lock(mutex);
 	icon = newIcon;
-}
-
-void Session::setAccess(uint64 flags)
-{
-	LockGuard lock(mutex);
-	access = std::bitset<Access::all>(flags);
-}
-
-void Session::setAccessEx(uint32 flags)
-{
-	LockGuard lock(mutex);
-	accessEx = std::bitset<AccessEx::all>(flags);
 }
 
 void Session::setStatusEx(uint32 flags)

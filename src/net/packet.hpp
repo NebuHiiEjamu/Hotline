@@ -3,12 +3,17 @@
 
 #include "../common.hpp"
 
+constexpr uint32 idAMAC = 0x414D4143;
 constexpr uint32 idBMP = 0x424D5020;
 constexpr uint32 idDATA = 0x44415441;
+constexpr uint32 idFILP = 0x46494C50;
 constexpr uint32 idfldr = 0x666C6472;
 constexpr uint32 idGIFf = 0x47494666;
+constexpr uint32 idHTRK = 0x4854524B;
 constexpr uint32 idHTXF = 0x48545846;
+constexpr uint32 idINFO = 0x494E464F;
 constexpr uint32 idJPEG = 0x4A504547;
+constexpr uint32 idMWIN = 0x4D57494E;
 constexpr uint32 idPICT = 0x50494354;
 constexpr uint32 idRFLT = 0x52464C54;
 constexpr uint32 idTRTP = 0x54525450;
