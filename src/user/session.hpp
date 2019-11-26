@@ -2,7 +2,6 @@
 #define _SESSION_H
 
 #include <bitset>
-#include <boost/predef.h>
 
 #include "forward.hpp"
 #include "../net/forward.hpp"
@@ -55,6 +54,7 @@ public:
 private:
 	AccountRef account;
 	HLConnectionPtr connection;
+	std::string nickname;
 	std::mutex mutex;
 	std::bitset<UserStatus::all> status;
 	std::bitset<UserStatusEx::all> statusEx;
