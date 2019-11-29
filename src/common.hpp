@@ -20,9 +20,9 @@ using Socket = boost::asio::ip::tcp::socket;
 using Strand = boost::asio::io_context::strand;
 using Timestamp = std::chrono::time_point<std::chrono::system_clock>;
 using uint16 = std::uint16_t;
-using suint16 = boost::numerics::safe<uint16>;
+using suint16 = boost::numeric::safe<uint16>;
 using uint32 = std::uint32_t;
-using suint32 = boost::numerics::safe<uint32>;
+using suint32 = boost::numeric::safe<uint32>;
 using uint64 = std::uint64_t;
 
 class ByteBuffer : std::enable_shared_from_this<ByteBuffer>
