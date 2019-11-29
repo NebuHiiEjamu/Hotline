@@ -27,7 +27,7 @@ struct sqlite3;
 class Server final : public std::enable_shared_from_this<Server>
 {
 public:
-	static constexpr uint16 version = 191;
+	static constexpr uint16 version = 192;
 	
 	static constexpr std::string_view getDefaultDatabase();
 	static ServerRef getInstance();
@@ -35,9 +35,9 @@ public:
 	static void transform(ByteString&);
 
 	~Server();
-	bool createSession(uint16, HLConnectionPtr);
-	void removeSession(uint16);
-	uint16 getNextUserId();
+	bool createSession(suint16, HLConnectionPtr);
+	void removeSession(suint16);
+	suint16 getNextUserId();
 	uint16 getUserCount();
 	std::string_view getDescription() const;
 	std::string_view getName() const;
@@ -52,14 +52,14 @@ private:
 	std::string description;
 	std::string agreement;
 	std::string flatNews;
-	std::map<uint16, SessionPtr> sessionMap;
+	std::map<suint16, SessionPtr> sessionMap;
 	std::set<SessionPtr> trackerSessions;
 	std::set<AccountPtr> accounts;
 	std::set<TrackerInfoPtr> trackers;
 	std::set<std::pair<asio::ip::address, Timestamp>> bans;
 	sqlite3 *db;
 	std::mutex mutex;
-	uint16 nextUserId;
+	suint16 nextUserId;
 };
 
 #endif // _SERVER_H

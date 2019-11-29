@@ -95,7 +95,7 @@ Server::Server():
 {
 }
 
-bool Server::createSession(uint16 id, HLConnectionPtr connection)
+bool Server::createSession(suint16 id, HLConnectionPtr connection)
 {
 	LockGuard lock(mutex);
 	SessionPtr newSession = std::make_shared<Session>(id, connection);
@@ -105,12 +105,12 @@ bool Server::createSession(uint16 id, HLConnectionPtr connection)
 	return true;
 }
 
-void Server::removeSession(uint16 id)
+void Server::removeSession(suint16 id)
 {
 	sessionMap.erase(id);
 }
 
-uint16 Server::getNextUserId()
+suint16 Server::getNextUserId()
 {
 	LockGuard lock(mutex);
 	return nextUserId++;

@@ -1,13 +1,13 @@
 #include "session.hpp"
 #include "hlconnection.hpp"
 
-Session::Session(uint16 id, PalaceConnectionPtr connection):
+Session::Session(suint16 id, PalaceConnectionPtr connection):
 	connection(connection),
 	id(id)
 {
 }
 
-uint16 Session::getId() const
+suint16 Session::getId() const
 {
 	return id;
 }
