@@ -12,10 +12,13 @@
 #include <vector>
 
 using Acceptor = boost::asio::ip::tcp::acceptor;
+using Address = boost::asio::ip::address;
 using Byte = std::uint8_t;
 using ByteString = std::vector<Byte>;
+using Endpoint = boost::asio::ip::tcp::endpoint;
 using Error = boost::asio::error_code;
 using LockGuard = std::lock_guard<std::mutex>;
+using Resolver = boost::asio::ip::tcp::resolver;
 using Socket = boost::asio::ip::tcp::socket;
 using Strand = boost::asio::io_context::strand;
 using Timestamp = std::chrono::time_point<std::chrono::system_clock>;

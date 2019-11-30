@@ -37,7 +37,7 @@ public:
 	~Server();
 	bool createSession(suint16, HLConnectionPtr);
 	void removeSession(suint16);
-	suint16 getNextUserId();
+	uint16 getNextUserId();
 	uint16 getUserCount();
 	std::string_view getDescription() const;
 	std::string_view getName() const;

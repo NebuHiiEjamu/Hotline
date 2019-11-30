@@ -110,7 +110,7 @@ void Server::removeSession(suint16 id)
 	sessionMap.erase(id);
 }
 
-suint16 Server::getNextUserId()
+uint16 Server::getNextUserId()
 {
 	LockGuard lock(mutex);
 	return nextUserId++;

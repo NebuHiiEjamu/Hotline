@@ -28,6 +28,22 @@ Socket& Connection::getSocket()
 	return socket;
 }
 
+Address& Connection::getAddress() const
+{
+	return socket.remote_endpoint().address();
+}
+
+std::string Connection::getHostName() const
+{
+	Resolver resolver(hive->getService());
+	return resolver.resolve(getAddress(), std::to_string(getPort()))->host_name();
+}
+
+uint16 Connection::getPort() const
+{
+	return socket.remote_endpoint().port();
+}
+
 bool Connection::hasError()
 {
 	uint32 v1 = 1;

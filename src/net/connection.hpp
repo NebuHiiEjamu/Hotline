@@ -13,6 +13,9 @@ public:
 	HivePtr getHive();
 	Strand& getStrand();
 	Socket& getSocket();
+	Address& getAddress() const;
+	std::string getHostName() const;
+	uint16 getPort() const;
 	uint32 getInBufferSize() const;
 	void setInBufferSize(uint32);
 	bool hasError();

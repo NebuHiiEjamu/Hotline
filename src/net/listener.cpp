@@ -38,8 +38,8 @@ void Listener::listen(std::string_view host, uint16 port)
 {
 	try
 	{
-		asio::ip::tcp::resolver resolver(hive->getService());
-		asio::ip::tcp::endpoint endpoint = resolver.resolve(host, std::to_string(port));
+		Resolver resolver(hive->getService());
+		Endpoint endpoint = resolver.resolve(host, std::to_string(port))->endpoint();
 
 		acceptor.open(endpoint.protocol());
 		acceptor.set_option(Acceptor::reuse_address(false));
