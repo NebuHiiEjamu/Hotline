@@ -12,6 +12,12 @@ uint32 Account::getAccessEx()
 	return static_cast<uint32>(accessEx.to_ulong());
 }
 
+std::string_view Account::getLogin()
+{
+	LockGuard lock(mutex);
+	return login;
+}
+
 void Account::setAccess(uint64 flags)
 {
 	LockGuard lock(mutex);

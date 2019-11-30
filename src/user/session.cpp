@@ -1,7 +1,10 @@
+#include <iomanip>
+#include <sstream>
+
 #include "session.hpp"
 #include "hlconnection.hpp"
 
-Session::Session(suint16 id, PalaceConnectionPtr connection):
+Session::Session(uint16 id, PalaceConnectionPtr connection):
 	connection(connection),
 	id(id)
 {
@@ -30,9 +33,32 @@ uint32 Session::getStatusEx()
 	return static_cast<uint32>(statusEx.to_ulong());
 }
 
-uint16 Session::getVersion() const
+std::string Session::getClientInfoText()
 {
-	return version;
+	static constexpr int spacing = 24;
+	LockGuard lock(mutex);
+	std::ostringstream ss;
+
+	ss << std::setw(spacing) << "Name:" << nickname << std::endl;
+	ss << std::setw(spacing) << "Login:" << account->getLogin() << std::endl;
+	ss << std::setw(spacing) << "Address:" << connection->getAddress() << std::endl;
+	ss << std::setw(spacing) << "Host:" << connection->getHostName() << std::endl;
+	ss << std::setw(spacing) << "ID:" << id << std::endl;
+	ss << std::setw(spacing) << "Icon:" << icon << std::endl;
+	ss << std::setw(spacing) << "Hotline Version:" << version << std::endl;
+	ss << std::setw(spacing) << "Client:" << getClient() << std::endl;
+
+	return ss.str();
+}
+
+std::string_view Session::getClient() const
+{
+	if (statusEx.test(UserStatusEx::hotline)) return "Hotline";
+	if (statusEx.test(UserStatusEx::tide)) return "Panorama";
+	if (statusEx.test(UserStatusEx::aniclient)) return "AniClient";
+	if (statusEx.test(UserStatusEx::heidrun)) return "Heidrun";
+	if (statusEx.test(UserStatusEx::frogblast)) return "Frogblast";
+	return "";
 }
 
 void Session::setStatus(uint16 flags)

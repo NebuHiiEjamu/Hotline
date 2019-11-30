@@ -137,6 +137,7 @@ public:
 	Account(std::string_view, std::string_view, ByteString);
 	uint64 getAccess();
 	uint32 getAccessEx();
+	std::string_view getLogin();
 	void setAccess(uint64);
 	void setAccessEx(uint32);
 private:

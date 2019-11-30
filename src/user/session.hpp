@@ -42,12 +42,13 @@ namespace UserStatusEx
 class Session : public std::enable_shared_from_this<Session>
 {
 public:
-	Session(suint16, HLConnectionPtr);
-	suint16 getId() const;
+	Session(uint16, HLConnectionPtr);
+	uint16 getId() const;
 	uint16 getIcon();
 	uint16 getStatus();
 	uint32 getStatusEx();
-	uint16 getVersion() const;
+	std::string getClientInfoText();
+	std::string_view getClient() const;
 	void setStatus(uint16);
 	void setStatusEx(uint32);
 	void setIcon(uint16);
@@ -58,7 +59,7 @@ private:
 	std::mutex mutex;
 	std::bitset<UserStatus::all> status;
 	std::bitset<UserStatusEx::all> statusEx;
-	suint16 id;
+	uint16 id;
 	uint16 icon;
 	uint16 version;
 };
