@@ -143,7 +143,7 @@ void ByteBuffer::writePath(const FilePath &path)
 	}
 }
 
-void ByteBuffer::writeString(std::string_view s)
+void ByteBuffer::writeString(std::string_view s, std::size_t padding = 0)
 {
 	// strip carriage returns (might have \r\n), make line feeds into carriage returns
 	std::string s2(s);
@@ -152,6 +152,7 @@ void ByteBuffer::writeString(std::string_view s)
 
 	write16(s2.size());
 	write(s2);
+	if (padding > 0) writeNull(padding - s2.size());
 }
 
 void ByteBuffer::write16(uint16 i)

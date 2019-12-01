@@ -48,7 +48,7 @@ public:
 	uint16 getStatus();
 	uint32 getStatusEx();
 	std::string getClientInfoText();
-	std::string_view getClient() const;
+	//std::string_view getClient() const;
 	void setStatus(uint16);
 	void setStatusEx(uint32);
 	void setIcon(uint16);

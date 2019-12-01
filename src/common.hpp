@@ -52,7 +52,7 @@ public:
 	void writeByte(Byte);
 	void writeNull(std::size_t);
 	void writePath(const FilePath&);
-	void writeString(std::string_view);
+	void writeString(std::string_view, std::size_t);
 	void writeTimestamp(const Timestamp&);
 	void write16(uint16);
 	void write32(uint32);

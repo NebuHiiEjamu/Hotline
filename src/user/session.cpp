@@ -46,12 +46,12 @@ std::string Session::getClientInfoText()
 	ss << std::setw(spacing) << "ID:" << id << '\r';
 	ss << std::setw(spacing) << "Icon:" << icon << '\r';
 	ss << std::setw(spacing) << "Hotline Version:" << version << '\r';
-	ss << std::setw(spacing) << "Client:" << getClient();
+	//ss << std::setw(spacing) << "Client:" << getClient();
 
 	return ss.str();
 }
 
-std::string_view Session::getClient() const
+/*std::string_view Session::getClient() const
 {
 	if (statusEx.test(UserStatusEx::hotline)) return "Hotline";
 	if (statusEx.test(UserStatusEx::tide)) return "Panorama";
@@ -59,7 +59,7 @@ std::string_view Session::getClient() const
 	if (statusEx.test(UserStatusEx::heidrun)) return "Heidrun";
 	if (statusEx.test(UserStatusEx::frogblast)) return "Frogblast";
 	return "";
-}
+}*/
 
 void Session::setStatus(uint16 flags)
 {
