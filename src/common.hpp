@@ -5,6 +5,7 @@
 #include <boost/safe_numerics/safe_integer.hpp>
 #include <chrono>
 #include <cstdint>
+#include <filesystem>
 #include <memory>
 #include <mutex>
 #include <string>
@@ -17,6 +18,7 @@ using Byte = std::uint8_t;
 using ByteString = std::vector<Byte>;
 using Endpoint = boost::asio::ip::tcp::endpoint;
 using Error = boost::asio::error_code;
+using FilePath = std::filesystem::path;
 using LockGuard = std::lock_guard<std::mutex>;
 using Resolver = boost::asio::ip::tcp::resolver;
 using Socket = boost::asio::ip::tcp::socket;
@@ -41,18 +43,20 @@ public:
 	Byte readByte();
 	Timestamp readTimestamp();
 	void readNull(std::size_t);
+	FilePath&& readPath();
 	std::string&& readString();
-	uint16 readU16();
-	uint32 readU32();
-	uint64 readU64();
+	uint16 read16();
+	uint32 read32();
+	uint64 read64();
 	template <class StringType> void write(const StringType&);
 	void writeByte(Byte);
 	void writeNull(std::size_t);
+	void writePath(const FilePath&);
 	void writeString(std::string_view);
 	void writeTimestamp(const Timestamp&);
-	void writeU16(uint16);
-	void writeU32(uint32);
-	void writeU64(uint64);
+	void write16(uint16);
+	void write32(uint32);
+	void write64(uint64);
 private:
 	ByteString data;
 	ByteString::iterator position;

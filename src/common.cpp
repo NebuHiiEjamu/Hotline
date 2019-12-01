@@ -60,19 +60,29 @@ void ByteBuffer::readNull(std::size_t bytes)
 	position += bytes;
 }
 
+FilePath&& ByteBuffer::readPath()
+{
+	FilePath path;
+	uint16 depth = read16();
+
+	for (uint16 i = 0; i < depth; i++)
+	{
+		readNull(2); // unknown
+		Byte length = readByte();
+		path /= read(length);
+	}
+
+	return std::move(path);
+}
+
 std::string&& ByteBuffer::readString()
 {
-	std::string s;
-
-	while (*position != 0)
-	{
-		s += static_cast<char>(*position);
-		position++;
-	}
+	std::string s = read(read16());
+	std::for_each(s2.begin(), s2.end(), [](char &c) { if (c == '\r') c = '\n'; });
 	return std::move(s);
 }
 
-uint16 ByteBuffer::readU16()
+uint16 ByteBuffer::read16()
 {
 	uint16 i;
 	std::copy(position, position + sizeof(uint16), reinterpret_cast<uint16*>(&i));
@@ -81,7 +91,7 @@ uint16 ByteBuffer::readU16()
 	return i;
 }
 
-uint32 ByteBuffer::readU32()
+uint32 ByteBuffer::read32()
 {
 	uint32 i;
 	std::copy(position, position + sizeof(uint32), reinterpret_cast<uint32*>(&i));
@@ -90,7 +100,7 @@ uint32 ByteBuffer::readU32()
 	return i;
 }
 
-uint64 ByteBuffer::readU64()
+uint64 ByteBuffer::read64()
 {
 	uint64 i;
 	std::copy(position, position + sizeof(uint64), reinterpret_cast<uint64*>(&i));
@@ -114,19 +124,43 @@ void ByteBuffer::writeNull(std::size_t bytes)
 	for (std::size_t i = 0; i < bytes; i++) data.push_back(0);
 }
 
-void ByteBuffer::writeString(std::string_view s)
+void ByteBuffer::writePath(const FilePath &path)
 {
-	data.insert(std::back_inserter(data), s.begin(), s.end());
-	data.push_back(0);
+	std::string_view generic = path.generic_string();
+	
+	write16(std::count_if(generic.begin(), generic.end(), [](char c) { return c == '/'; }));
+	for (auto level : path)
+	{
+		std::string_view slevel = level.string();
+
+		if (!slevel.empty() && slevel != FilePath::preferred_separator &&
+			slevel.find(":") == std::string::npos)
+		{
+			writeNull(2); // unknown
+			writeByte(slevel.size());
+			write(slevel);
+		}
+	}
 }
 
-void ByteBuffer::writeU16(uint16 i)
+void ByteBuffer::writeString(std::string_view s)
+{
+	// strip carriage returns (might have \r\n), make line feeds into carriage returns
+	std::string s2(s);
+	std::remove(s2.begin(), s2.end(), [](char c) { return c == '\r'; });
+	std::for_each(s2.begin(), s2.end(), [](char &c) { if (c == '\n') c = '\r'; });
+
+	write16(s2.size());
+	write(s2);
+}
+
+void ByteBuffer::write16(uint16 i)
 {
 	data.push_back(static_cast<Byte>((i & 0xFF00) >> 8);
 	data.push_back(static_cast<Byte>(i & 0xFF);
 }
 
-void ByteBuffer::writeU32(uint32 i)
+void ByteBuffer::write32(uint32 i)
 {
 	data.push_back(static_cast<Byte>((i & 0xFF000000) >> 24);
 	data.push_back(static_cast<Byte>((i & 0xFF0000) >> 16);
@@ -134,7 +168,7 @@ void ByteBuffer::writeU32(uint32 i)
 	data.push_back(static_cast<Byte>(i & 0xFF);
 }
 
-void ByteBuffer::writeU64(uint64 i)
+void ByteBuffer::write64(uint64 i)
 {
 	data.push_back(static_cast<Byte>((i & 0xFF00000000000000) >> 56);
 	data.push_back(static_cast<Byte>((i & 0xFF000000000000) >> 48);

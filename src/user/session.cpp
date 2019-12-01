@@ -10,7 +10,7 @@ Session::Session(uint16 id, PalaceConnectionPtr connection):
 {
 }
 
-suint16 Session::getId() const
+uint16 Session::getId() const
 {
 	return id;
 }
@@ -39,14 +39,14 @@ std::string Session::getClientInfoText()
 	LockGuard lock(mutex);
 	std::ostringstream ss;
 
-	ss << std::setw(spacing) << "Name:" << nickname << std::endl;
-	ss << std::setw(spacing) << "Login:" << account->getLogin() << std::endl;
-	ss << std::setw(spacing) << "Address:" << connection->getAddress() << std::endl;
-	ss << std::setw(spacing) << "Host:" << connection->getHostName() << std::endl;
-	ss << std::setw(spacing) << "ID:" << id << std::endl;
-	ss << std::setw(spacing) << "Icon:" << icon << std::endl;
-	ss << std::setw(spacing) << "Hotline Version:" << version << std::endl;
-	ss << std::setw(spacing) << "Client:" << getClient() << std::endl;
+	ss << std::setw(spacing) << "Name:" << nickname << '\r';
+	ss << std::setw(spacing) << "Login:" << account->getLogin() << '\r';
+	ss << std::setw(spacing) << "Address:" << connection->getAddress() << '\r';
+	ss << std::setw(spacing) << "Host:" << connection->getHostName() << '\r';
+	ss << std::setw(spacing) << "ID:" << id << '\r';
+	ss << std::setw(spacing) << "Icon:" << icon << '\r';
+	ss << std::setw(spacing) << "Hotline Version:" << version << '\r';
+	ss << std::setw(spacing) << "Client:" << getClient();
 
 	return ss.str();
 }
