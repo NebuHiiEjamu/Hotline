@@ -51,8 +51,30 @@ void Account::exportLegacyUserData(const FilePath &path) const
 
 void Account::exportHxdAccess(const FilePath &path) const
 {
+	std::ofstream outFile(path / "access");
+	outFile << "user_visibility=" << accessEx.test(AccessEx::visibility) ? '1' : '0' << std::endl;
+	outFile << "user_color=" << accessEx.test(AccessEx::color) ? '1' : '0' << std::endl;
+	outFile << "can_spam=" << accessEx.test(AccessEx::spam) ? '1' : '0' << std::endl;
+	outFile << "set_subject=" << accessEx.test(AccessEx::setTopic) ? '1' : '0' << std::endl;
+	outFile << "user_access=" << accessEx.test(AccessEx::access) ? '1' : '0' << std::endl;
+	outFile << "user_0wn=" << accessEx.test(AccessEx::own) ? '1' : '0' << std::endl;
+	outFile << "access_volatile=" << accessEx.test(AccessEx::accessVolatile) ? '1' : '0' << std::endl;
+	outFile << "is_0wn3d=" << accessEx.test(AccessEx::owned) ? '1' : '0' << std::endl;
+	outFile << "manage_users=" << accessEx.test(AccessEx::editAccount) ? '1' : '0' << std::endl;
+	outFile << "color=" << color << std::endl;
+	outFile << "invisibility=" << statusEx.test(UserStatusEx::visible) ? '1' : '0' << std::endl;
+	outFile << "icon=" << icon << std::endl;
+	outFile << "msg=" << accessEx.test(AccessEx::message) ? '1' : '0' << std::endl;
+	outFile.close();
 }
 
 void Account::exportHxdConf(const FilePath &path) const
 {
+	std::ofstream outFile(path / "conf");
+	outFile << "limits {" << std::endl;
+	outFile << "\tindividual_downloads " << downloads << ';' << std::endl;
+	outFile << "\tindividual_uploads " << uploads << ';' << std::endl;
+	outFile << "\tout_Bps " << outBps << ';' << std::endl;
+	outFile << "};" << std::endl;
+	outFile.close();
 }

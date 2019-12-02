@@ -58,9 +58,10 @@ private:
 	std::string nickname;
 	std::mutex mutex;
 	std::bitset<UserStatus::all> status;
-	std::bitset<UserStatusEx::all> statusEx;
+	std::bitset<UserStatusEx::all> statusEx; // separate from account
 	uint16 id;
-	uint16 icon;
+	uint16 icon; // separate from account
+	uint16 color; // separate from account
 	uint16 version;
 };
 

@@ -5,6 +5,7 @@
 #include <boost/predef.h>
 
 #include "../common.hpp"
+#include "session.h"
 
 namespace Access
 {
@@ -153,9 +154,12 @@ private:
 	std::mutex mutex;
 	std::bitset<Access::all> access;
 	std::bitset<AccessEx::all> accessEx;
+	std::bitset<UserStatusEx::all> statusEx;
 	uint32 downloads;
 	uint32 uploads;
 	uint32 outBps;
+	uint16 icon;
+	uint16 color;
 };
 
 #endif // _ACCOUNT_H
