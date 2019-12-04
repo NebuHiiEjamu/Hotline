@@ -47,12 +47,12 @@ template <class StringType> StringType&& ByteBuffer::read(std::size_t bytes)
 	return std::move(s);
 }
 
-Byte ByteBuffer::readByte()
+template <class T> T ByteBuffer::read()
 {
-	Byte b;
-	std::copy(position, position + sizeof(Byte), reinterpret_cast<Byte*>(&b));
-	position += sizeof(Byte);
-	return b;
+	T t;
+	std::copy(position, position + sizeof(T), reinterpret_cast<T*>(&t));
+	position += sizeof(T);
+	return t;
 }
 
 void ByteBuffer::readNull(std::size_t bytes)
@@ -60,7 +60,13 @@ void ByteBuffer::readNull(std::size_t bytes)
 	position += bytes;
 }
 
-FilePath&& ByteBuffer::readPath()
+template<> bool ByteBuffer::read()
+{
+	Byte b = read();
+	return b == 1 ? true : false;
+}
+
+template<> FilePath&& ByteBuffer::read()
 {
 	FilePath path;
 	uint16 depth = read16();
@@ -82,41 +88,15 @@ std::string&& ByteBuffer::readString()
 	return std::move(s);
 }
 
-uint16 ByteBuffer::read16()
-{
-	uint16 i;
-	std::copy(position, position + sizeof(uint16), reinterpret_cast<uint16*>(&i));
-	position += sizeof(uint16);
-	endian::big_to_native_inplace(i);
-	return i;
-}
-
-uint32 ByteBuffer::read32()
-{
-	uint32 i;
-	std::copy(position, position + sizeof(uint32), reinterpret_cast<uint32*>(&i));
-	position += sizeof(uint32);
-	endian::big_to_native_inplace(i);
-	return i;
-}
-
-uint64 ByteBuffer::read64()
-{
-	uint64 i;
-	std::copy(position, position + sizeof(uint64), reinterpret_cast<uint64*>(&i));
-	position += sizeof(uint64);
-	endian::big_to_native_inplace(i);
-	return i;
-}
-
 template <class StringType> void ByteBuffer::write(const StringType &s);
 {
 	data.insert(std::back_inserter(data), s.begin(), s.end());
 }
 
-void ByteBuffer::writeByte(Byte b)
+template <class T> void ByteBuffer::write(T t)
 {
-	data.push_back(b);
+	for (int i = sizeof(T) - 1; i >= 0; i--)
+		data.push_back(static_cast<Byte>((t & (0xFF << (i * 8))) >> (i * 8)));
 }
 
 void ByteBuffer::writeNull(std::size_t bytes)
@@ -124,7 +104,12 @@ void ByteBuffer::writeNull(std::size_t bytes)
 	for (std::size_t i = 0; i < bytes; i++) data.push_back(0);
 }
 
-void ByteBuffer::writePath(const FilePath &path)
+template<> void ByteBuffer::write(bool b)
+{
+	data.push_back(b ? 1 : 0);
+}
+
+template<> void ByteBuffer::write(const FilePath &path)
 {
 	std::string_view generic = path.generic_string();
 	
@@ -163,18 +148,6 @@ void ByteBuffer::write16(uint16 i)
 
 void ByteBuffer::write32(uint32 i)
 {
-	data.push_back(static_cast<Byte>((i & 0xFF000000) >> 24);
-	data.push_back(static_cast<Byte>((i & 0xFF0000) >> 16);
-	data.push_back(static_cast<Byte>((i & 0xFF00) >> 8);
-	data.push_back(static_cast<Byte>(i & 0xFF);
-}
-
-void ByteBuffer::write64(uint64 i)
-{
-	data.push_back(static_cast<Byte>((i & 0xFF00000000000000) >> 56);
-	data.push_back(static_cast<Byte>((i & 0xFF000000000000) >> 48);
-	data.push_back(static_cast<Byte>((i & 0xFF0000000000) >> 40);
-	data.push_back(static_cast<Byte>((i & 0xFF00000000) >> 32);
 	data.push_back(static_cast<Byte>((i & 0xFF000000) >> 24);
 	data.push_back(static_cast<Byte>((i & 0xFF0000) >> 16);
 	data.push_back(static_cast<Byte>((i & 0xFF00) >> 8);

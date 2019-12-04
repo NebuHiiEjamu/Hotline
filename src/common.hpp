@@ -40,23 +40,21 @@ public:
 	void setBytes(ByteString&);
 	void flush();
 	template <class StringType> StringType&& read(std::size_t);
-	Byte readByte();
-	Timestamp readTimestamp();
+	template <class T> T read();
+	template<> bool read();
+	template<> Timestamp&& read();
+	template<> FilePath&& read();
 	void readNull(std::size_t);
-	FilePath&& readPath();
 	std::string&& readString();
-	uint16 read16();
-	uint32 read32();
-	uint64 read64();
 	template <class StringType> void write(const StringType&);
-	void writeByte(Byte);
+	template <class T> void write(T);
+	template<> void write(bool);
+	template<> void write(const FilePath&);
+	template<> void write(const Timestamp&);
+	void write(std::string_view, std::size_t);
 	void writeNull(std::size_t);
-	void writePath(const FilePath&);
-	void writeString(std::string_view, std::size_t);
-	void writeTimestamp(const Timestamp&);
-	void write16(uint16);
-	void write32(uint32);
-	void write64(uint64);
+	void write16(uint16); // for ambiguity
+	void write32(uint32); // for ambiguity
 private:
 	ByteString data;
 	ByteString::iterator position;
