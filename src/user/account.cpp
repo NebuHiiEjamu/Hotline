@@ -36,12 +36,12 @@ void Account::exportLegacyUserData(const FilePath &path) const
 {
 	ByteBuffer buffer;
 
-	buffer.write32(legacyUserDataMagic);
-	buffer.write64(access.to_ullong());
+	buffer.write(legacyUserDataMagic);
+	buffer.write(access.to_ullong());
 	buffer.writeNull(516); // padding
-	buffer.writeString(name, 134);
-	buffer.writeString(login, 34);
-	buffer.writeString(password, 32);
+	buffer.write(name, 134);
+	buffer.write(login, 34);
+	buffer.write(password, 32);
 
 	ByteString userData = buffer.getBytes();
 	std::ofstream outFile(path / "UserData", std::ofstream::binary);
