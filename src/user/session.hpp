@@ -57,6 +57,7 @@ private:
 	AccountRef account;
 	HLConnectionPtr connection;
 	std::string nickname;
+	std::string autoReply;
 	std::mutex mutex;
 	std::bitset<UserStatus::all> status;
 	std::bitset<UserStatusEx::all> statusEx; // separate from account

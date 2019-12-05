@@ -6,6 +6,8 @@
 
 Session::Session(uint16 id, PalaceConnectionPtr connection):
 	connection(connection),
+	lastTransactionId(0),
+	replies(0),
 	id(id)
 {
 }

@@ -1,11 +1,16 @@
 #include <algorithm>
+#include <array>
 #include <boost/endian/conversion.hpp>
+#include <ctime>
 #include <iterator>
 #include <utility>
 
 #include "common.hpp"
 
 using boost::endian;
+
+static const std::array<uint32, 12> monthSeconds = { 0, 2678400, 5097600, 7776000, 10368000,
+	13046400, 15638400, 18316400, 20995200, 23587200, 26265600, 28857600 };
 
 ByteBuffer::ByteBuffer()
 	position(data.begin())
@@ -60,13 +65,13 @@ void ByteBuffer::readNull(std::size_t bytes)
 	position += bytes;
 }
 
-template<> bool ByteBuffer::read()
+template <> bool ByteBuffer::read()
 {
 	Byte b = read();
 	return b == 1 ? true : false;
 }
 
-template<> FilePath&& ByteBuffer::read()
+template <> FilePath&& ByteBuffer::read()
 {
 	FilePath path;
 	uint16 depth = read16();
@@ -81,11 +86,21 @@ template<> FilePath&& ByteBuffer::read()
 	return std::move(path);
 }
 
-std::string&& ByteBuffer::readString()
+template <> std::string&& ByteBuffer::read()
 {
 	std::string s = read(read16());
 	std::for_each(s2.begin(), s2.end(), [](char &c) { if (c == '\r') c = '\n'; });
 	return std::move(s);
+}
+
+template <> Timestamp&& ByteBuffer::read()
+{
+	uint16 year = read();
+	readNull(2); // milliseconds, not needed?
+	uint32 seconds = read();
+	std::time_t time = static_cast<std::time_t>(seconds * (year - 1900));
+
+	return std::chrono::system_clock::from_time_t(time);
 }
 
 template <class StringType> void ByteBuffer::write(const StringType &s);
@@ -126,6 +141,19 @@ template<> void ByteBuffer::write(const FilePath &path)
 			write(slevel);
 		}
 	}
+}
+
+template<> void ByteBuffer::write(const Timestamp &time)
+{
+	std::time_t cTime = std::chrono::system_clock::to_time_t(time);
+	std::tm timeTm = *std::localtime(&cTime);
+	uint16 year = timeTm.tm_year + 1900;
+
+	write16(year);
+	write16(std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch()).count());
+	write32(monthSeconds[timeTm.tm_mon] + (timeTm.tm_mon > 1 && !(year % 4) ? 86400 : 0) +
+		(timeTm.tm_sec + (60 * (timeTm.tm_min + 60 * ((timeTm.tm_hour + 24 *
+		(timeTm.tm_mday - 1)))))));
 }
 
 void ByteBuffer::writeString(std::string_view s, std::size_t padding = 0)

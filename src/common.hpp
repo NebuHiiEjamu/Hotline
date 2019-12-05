@@ -41,11 +41,11 @@ public:
 	void flush();
 	template <class StringType> StringType&& read(std::size_t);
 	template <class T> T read();
-	template<> bool read();
-	template<> Timestamp&& read();
-	template<> FilePath&& read();
+	template <> bool read();
+	template <> Timestamp&& read();
+	template <> FilePath&& read();
+	template <> std::string&& read();
 	void readNull(std::size_t);
-	std::string&& readString();
 	template <class StringType> void write(const StringType&);
 	template <class T> void write(T);
 	template<> void write(bool);
