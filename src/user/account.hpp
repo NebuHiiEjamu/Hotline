@@ -53,6 +53,14 @@ namespace Access
 		uploadFolders,
 		downloadFolders,
 		sendMessages,
+		editArticles,
+		moveNewsBundles,
+		moveCategories,
+		spam,
+		emptyTrash,
+		viewHiddenUsers,
+		editFolderAccess,
+		assignFolderAccess
 #else
 		renameFolders = 0,
 		deleteFolders,
@@ -94,7 +102,15 @@ namespace Access
 		createCategories,
 		deleteArticles,
 		broadcast,
-		sendMessages = 47,
+		assignFolderAccess,
+		editFolderAccess,
+		viewHiddenUsers,
+		emptyTrash,
+		spam,
+		moveCategories,
+		moveNewsBundles,
+		editArticles,
+		sendMessages,
 #endif
 		all
 	};
@@ -132,6 +148,32 @@ namespace AccessEx
 	};
 }
 
+namespace FolderAccess
+{
+	enum
+	{
+		see = 0,
+		create,
+		uploadFiles,
+		uploadFolders,
+		moveInItems,
+		aliasInItems,
+		copyInItems,
+		deleteFiles = 9,
+		deleteFolders,
+		moveOutItems,
+		seeContent = 19,
+		downloadFiles,
+		downloadFolders,
+		aliasOutItems,
+		copyOutItems,
+		renameItems = 29,
+		setItemAttributes,
+		editFileContents,
+		all
+	};
+};
+
 class Account : public std::enable_shared_from_this<Account>
 {
 public:
@@ -155,6 +197,7 @@ private:
 	std::bitset<Access::all> access;
 	std::bitset<AccessEx::all> accessEx;
 	std::bitset<UserStatusEx::all> statusEx;
+	std::bitset<FolderAccess::all> folderAccess;
 	uint32 downloads;
 	uint32 uploads;
 	uint32 outBps;

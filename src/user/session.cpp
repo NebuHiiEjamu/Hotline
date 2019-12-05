@@ -33,7 +33,7 @@ uint32 Session::getStatusEx()
 	return static_cast<uint32>(statusEx.to_ulong());
 }
 
-std::string Session::getClientInfoText()
+std::string&& Session::getClientInfoText()
 {
 	static constexpr int spacing = 24;
 	LockGuard lock(mutex);
@@ -41,14 +41,22 @@ std::string Session::getClientInfoText()
 
 	ss << std::setw(spacing) << "Name:" << nickname << '\r';
 	ss << std::setw(spacing) << "Login:" << account->getLogin() << '\r';
-	ss << std::setw(spacing) << "Address:" << connection->getAddress() << '\r';
+	ss << std::setw(spacing) << "Address:" << connection->getAddress().to_string() << '\r';
 	ss << std::setw(spacing) << "Host:" << connection->getHostName() << '\r';
 	ss << std::setw(spacing) << "ID:" << id << '\r';
 	ss << std::setw(spacing) << "Icon:" << icon << '\r';
-	ss << std::setw(spacing) << "Hotline Version:" << version << '\r';
+	ss << std::setw(spacing) << "Hotline Version:" << getVersionString() << '\r';
 	//ss << std::setw(spacing) << "Client:" << getClient();
 
 	return ss.str();
+}
+
+std::string&& Session::getVersionString() const
+{
+	std::string s(std::to_string(version));
+	s.insert(1, 1, '.');
+	s.insert(3, 1, '.');
+	return std::move(s);
 }
 
 /*std::string_view Session::getClient() const

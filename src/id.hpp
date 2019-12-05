@@ -79,7 +79,15 @@ enum class TransId : uint16
 	newNewsCat,
 	getNewsArtData = 400,
 	postNewsArt = 410,
-	delNewsArt
+	delNewsArt,
+	editNewsArt,
+	sendKeepAlive = 500,
+	index = 513,
+	indexStatus = 801,
+	emptyTrash = 803,
+	folderAccess,
+	setFldrAccessList,
+	script
 };
 
 enum class Field : uint16

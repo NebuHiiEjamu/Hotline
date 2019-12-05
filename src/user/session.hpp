@@ -47,7 +47,8 @@ public:
 	uint16 getIcon();
 	uint16 getStatus();
 	uint32 getStatusEx();
-	std::string getClientInfoText();
+	std::string&& getClientInfoText();
+	std::string&& getVersionString() const;
 	//std::string_view getClient() const;
 	void setStatus(uint16);
 	void setStatusEx(uint32);
@@ -59,6 +60,8 @@ private:
 	std::mutex mutex;
 	std::bitset<UserStatus::all> status;
 	std::bitset<UserStatusEx::all> statusEx; // separate from account
+	uint32 lastTransactionId;
+	uint32 replies;
 	uint16 id;
 	uint16 icon; // separate from account
 	uint16 color; // separate from account
