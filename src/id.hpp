@@ -1,7 +1,7 @@
 #ifndef _ID_H
 #define _PACKET_H
 
-#include "../common.hpp"
+#include "common.hpp"
 
 enum class Magic : uint32
 {

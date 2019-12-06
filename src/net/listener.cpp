@@ -4,6 +4,8 @@
 #include "connection.hpp"
 #include "hive.hpp"
 
+using boost::asio;
+
 Listener::Listener(HivePtr hive):
 	hive(hive),
 	acceptor(hive->getIOContext()),

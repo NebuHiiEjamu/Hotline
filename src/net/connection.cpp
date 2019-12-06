@@ -72,7 +72,7 @@ void Connection::startError(Error error)
 	}
 }
 
-void Connection::dispatchReceive(uint32 totalBytes)
+void Connection::dispatchReceive(Size totalBytes)
 {
 	pendingReceives.push(totalBytes);
 	if (pendingReceives.empty()) startReceive(totalBytes);
@@ -85,7 +85,7 @@ void Connection::dispatchSend(const ByteString &outString)
 	if (shouldStartSend) startSend();
 }
 
-void Connection::startReceive(uint32 totalBytes)
+void Connection::startReceive(Size totalBytes)
 {
 	if (totalBytes > 0)
 	{
@@ -111,7 +111,7 @@ void Connection::startSend()
 			pendingSends.begin())));
 }
 
-void Connection::handleReceive(Error error, uint32 receivedBytes)
+void Connection::handleReceive(Error error, Size receivedBytes)
 {
 	if (error || hasError() || hive->stopped()) startError(error);
 	else
@@ -135,7 +135,7 @@ void Connection::handleSend(Error error, const ByteString &outString)
 	}
 }
 
-void Connection::receive(uint32 totalBytes = 0)
+void Connection::receive(Size totalBytes = 0)
 {
 	strand.post(std::bind(&Connection::dispatchReceive, shared_from_this(), totalBytes));
 }
@@ -145,12 +145,12 @@ void Connection::send(const ByteString &outString)
 	strand.post(std::bind(&Connection::dispatchSend, shared_from_this(), buffer));
 }
 
-uint32 Connection::getInBufferSize() const
+Size Connection::getInBufferSize() const
 {
 	return inBufferSize;
 }
 
-void Connection::setInBufferSize(uint32 newSize)
+void Connection::setInBufferSize(Size newSize)
 {
 	inBufferSize = newSize;
 }

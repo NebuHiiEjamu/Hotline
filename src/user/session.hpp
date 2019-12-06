@@ -61,8 +61,8 @@ private:
 	std::mutex mutex;
 	std::bitset<UserStatus::all> status;
 	std::bitset<UserStatusEx::all> statusEx; // separate from account
-	uint32 lastTransactionId;
-	uint32 replies;
+	suint32 lastTransactionId;
+	suint32 replies;
 	uint16 id;
 	uint16 icon; // separate from account
 	uint16 color; // separate from account

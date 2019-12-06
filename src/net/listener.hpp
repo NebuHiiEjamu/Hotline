@@ -6,8 +6,6 @@
 #include "forward.hpp"
 #include "../common.hpp"
 
-using boost::asio;
-
 class Listener : public std::enable_shared_from_this<Listener>
 {
 public:

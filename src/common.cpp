@@ -9,7 +9,7 @@
 
 using boost::endian;
 
-static const std::array<uint32, 12> monthSeconds = { 0, 2678400, 5097600, 7776000, 10368000,
+static constexpr std::array<uint32, 12> monthSeconds = { 0, 2678400, 5097600, 7776000, 10368000,
 	13046400, 15638400, 18316400, 20995200, 23587200, 26265600, 28857600 };
 
 ByteBuffer::ByteBuffer()
@@ -23,7 +23,7 @@ ByteBuffer::ByteBuffer(ByteString &inString):
 {
 }
 
-ByteBuffer&& ByteBuffer::clone(std::size_t bytes) const
+ByteBuffer&& ByteBuffer::clone(Size bytes) const
 {
 	ByteBuffer newBuffer;
 	newBuffer.data.insert(std::back_inserter(data), position, position + bytes);
@@ -45,7 +45,7 @@ void ByteBuffer::flush()
 	data.clear();
 }
 
-template <class StringType> StringType&& ByteBuffer::read(std::size_t bytes)
+template <class StringType> StringType&& ByteBuffer::read(Size bytes)
 {
 	StringType s(position, position + bytes);
 	position += bytes;
@@ -60,7 +60,7 @@ template <class T> T ByteBuffer::read()
 	return t;
 }
 
-void ByteBuffer::readNull(std::size_t bytes)
+void ByteBuffer::readNull(Size bytes)
 {
 	position += bytes;
 }
@@ -114,9 +114,9 @@ template <class T> void ByteBuffer::write(T t)
 		data.push_back(static_cast<Byte>((t & (0xFF << (i * 8))) >> (i * 8)));
 }
 
-void ByteBuffer::writeNull(std::size_t bytes)
+void ByteBuffer::writeNull(Size bytes)
 {
-	for (std::size_t i = 0; i < bytes; i++) data.push_back(0);
+	for (Size i = 0; i < bytes; i++) data.push_back(0);
 }
 
 template<> void ByteBuffer::write(bool b)
@@ -156,7 +156,7 @@ template<> void ByteBuffer::write(const Timestamp &time)
 		(timeTm.tm_mday - 1)))))));
 }
 
-void ByteBuffer::writeString(std::string_view s, std::size_t padding = 0)
+void ByteBuffer::writeString(std::string_view s, Size padding = 0)
 {
 	// strip carriage returns (might have \r\n), make line feeds into carriage returns
 	std::string s2(s);

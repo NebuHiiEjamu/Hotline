@@ -21,6 +21,7 @@ using Error = boost::asio::error_code;
 using FilePath = std::filesystem::path;
 using LockGuard = std::lock_guard<std::mutex>;
 using Resolver = boost::asio::ip::tcp::resolver;
+using Size = std::size_t;
 using Socket = boost::asio::ip::tcp::socket;
 using Strand = boost::asio::io_context::strand;
 using Timestamp = std::chrono::time_point<std::chrono::system_clock>;
@@ -35,24 +36,24 @@ class ByteBuffer : std::enable_shared_from_this<ByteBuffer>
 public:
 	ByteBuffer();
 	ByteBuffer(ByteString&);
-	ByteBuffer&& clone(std::size_t) const;
+	ByteBuffer&& clone(Size) const;
 	ByteString& getBytes() const;
 	void setBytes(ByteString&);
 	void flush();
-	template <class StringType> StringType&& read(std::size_t);
+	template <class StringType> StringType&& read(Size);
 	template <class T> T read();
 	template <> bool read();
 	template <> Timestamp&& read();
 	template <> FilePath&& read();
 	template <> std::string&& read();
-	void readNull(std::size_t);
+	void readNull(Size);
 	template <class StringType> void write(const StringType&);
 	template <class T> void write(T);
 	template<> void write(bool);
 	template<> void write(const FilePath&);
 	template<> void write(const Timestamp&);
-	void write(std::string_view, std::size_t);
-	void writeNull(std::size_t);
+	void write(std::string_view, Size);
+	void writeNull(Size);
 	void write16(uint16); // for ambiguity
 	void write32(uint32); // for ambiguity
 private:

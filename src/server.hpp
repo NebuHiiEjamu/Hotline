@@ -10,11 +10,9 @@
 #include "forward.hpp"
 #include "common.hpp"
 
-using boost::asio;
-
 struct TrackerInfo : std::enable_shared_from_this<TrackerInfo>
 {
-	asio::ip::address address;
+	Address address;
 	std::string login;
 	ByteString password;
 };
@@ -27,7 +25,7 @@ struct sqlite3;
 class Server final : public std::enable_shared_from_this<Server>
 {
 public:
-	static constexpr uint16 version = 192;
+	static constexpr uint16 version = 197;
 	
 	static constexpr std::string_view getDefaultDatabase();
 	static ServerRef getInstance();
@@ -56,7 +54,7 @@ private:
 	std::set<SessionPtr> trackerSessions;
 	std::set<AccountPtr> accounts;
 	std::set<TrackerInfoPtr> trackers;
-	std::set<std::pair<asio::ip::address, Timestamp>> bans;
+	std::set<std::pair<Address, Timestamp>> bans;
 	sqlite3 *db;
 	std::mutex mutex;
 	suint16 nextUserId;

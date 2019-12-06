@@ -37,7 +37,7 @@ uint32 Session::getStatusEx()
 
 std::string&& Session::getClientInfoText()
 {
-	static constexpr int spacing = 24;
+	static constexpr int spacing = 22;
 	LockGuard lock(mutex);
 	std::ostringstream ss;
 
@@ -47,7 +47,7 @@ std::string&& Session::getClientInfoText()
 	ss << std::setw(spacing) << "Host:" << connection->getHostName() << '\r';
 	ss << std::setw(spacing) << "ID:" << id << '\r';
 	ss << std::setw(spacing) << "Icon:" << icon << '\r';
-	ss << std::setw(spacing) << "Hotline Version:" << getVersionString() << '\r';
+	ss << std::setw(spacing) << "Version:" << getVersionString() << '\r';
 	//ss << std::setw(spacing) << "Client:" << getClient();
 
 	return ss.str();

@@ -5,8 +5,6 @@
 #include "user/hlconnection.hpp"
 #include "user/session.hpp"
 
-using boost::endian;
-
 uint32 Server::kdxDecrypt(uint32 key, ByteString &inString)
 {
 	uint32 *data32 = reinterpret_cast<uint32*>(inString.data());
@@ -15,7 +13,7 @@ uint32 Server::kdxDecrypt(uint32 key, ByteString &inString)
 	for (uint32 i = 0; i < size; i++)
 	{
 		key = (key << 1) + 0x4878;
-		data32[i] ^= endian::big_to_native(key);
+		data32[i] ^= boost::endian::big_to_native(key);
 	}
 
 	return key;
@@ -23,7 +21,7 @@ uint32 Server::kdxDecrypt(uint32 key, ByteString &inString)
 
 void Server::transform(ByteString &inString)
 {
-	for (auto &b : inString) b ^= 0xFF;
+	for (auto &b : inString) b = ~b;
 }
 
 std::shared_ptr<Server> Server::instance = std::make_shared<Server>();
@@ -87,8 +85,8 @@ constexpr std::string_view Server::getDefaultDatabase()
 		\
 		\
 		INSERT INTO `accounts` (login, name, password, flags)\
-			VALUES ('admin', 'Administrator', x'9E9B929691', 141836996834303),\
-				('guest', 'Guest', NULL, 140738026041376);";
+			VALUES ('admin', 'Administrator', x'9E9B929691', 18443313597422501888),\
+				('guest', 'Guest', NULL, 2337381538192162816);";
 }
 
 Server::Server():

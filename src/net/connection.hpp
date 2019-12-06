@@ -16,18 +16,18 @@ public:
 	Address& getAddress() const;
 	std::string getHostName() const;
 	uint16 getPort() const;
-	uint32 getInBufferSize() const;
-	void setInBufferSize(uint32);
+	Size getInBufferSize() const;
+	void setInBufferSize(Size);
 	bool hasError();
 	void disconnect();
-	void receive(uint32);
+	void receive(Size);
 	void send(const ByteString&);
 private:
-	void dispatchReceive(uint32);
+	void dispatchReceive(Size);
 	void dispatchSend(const ByteString&);
-	void startReceive(uint32);
+	void startReceive(Size);
 	void startSend();
-	void handleReceive(Error, uint32);
+	void handleReceive(Error, Size);
 	void handleSend(Error, const ByteString&);
 	void startError(Error);
 protected:
@@ -44,9 +44,9 @@ protected:
 	Strand strand;
 	ByteString inBuffer;
 	std::atomic_uint32_t errorState;
-	std::queue<uint32> pendingReceives;
+	std::queue<Size> pendingReceives;
 	std::queue<ByteString> pendingSends;
-	uint32 inBufferSize;
+	Size inBufferSize;
 };
 
 #endif // _CONNECTION_H
