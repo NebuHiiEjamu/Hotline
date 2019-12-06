@@ -102,7 +102,6 @@ namespace Access
 		createCategories,
 		deleteArticles,
 		broadcast,
-		assignFolderAccess,
 		editFolderAccess,
 		viewHiddenUsers,
 		emptyTrash,
@@ -111,6 +110,7 @@ namespace Access
 		moveNewsBundles,
 		editArticles,
 		sendMessages,
+		assignFolderAccess,
 #endif
 		all
 	};
