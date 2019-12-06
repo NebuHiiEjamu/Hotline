@@ -2,8 +2,8 @@
 #define _HLCONNECTION_H
 
 #include "forward.hpp"
-#include "../net/forward.hpp"
-#include "../net/connection.hpp"
+#include "../common/src/forward.hpp"
+#include "../common/src/connection.hpp"
 
 class HLConnection : public Connection
 {
@@ -12,8 +12,8 @@ public:
 	void setSession(SessionRef);
 protected:
 	void onAccept(std::string_view, uint16) override;
-	void onSend(const ByteString&) override;
-	void onReceive(ByteString&) override;
+	void onSend(const Buffer&) override;
+	void onReceive(Buffer&) override;
 	void onError(Error) override;
 	void onDisconnect() override;
 private:

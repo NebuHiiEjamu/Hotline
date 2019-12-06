@@ -4,8 +4,8 @@
 #include <bitset>
 
 #include "forward.hpp"
-#include "../net/forward.hpp"
-#include "../common.hpp"
+#include "../common/src/forward.hpp"
+#include "../common/src/typedefs.hpp"
 
 namespace UserStatus
 {
@@ -42,6 +42,8 @@ namespace UserStatusEx
 class Session : public std::enable_shared_from_this<Session>
 {
 public:
+	static constexpr uint32 trtpVersion = 0x10002;
+	
 	Session(uint16, HLConnectionPtr);
 	uint16 getId() const;
 	uint16 getIcon();

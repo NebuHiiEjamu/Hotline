@@ -4,7 +4,7 @@
 #include <bitset>
 #include <boost/predef.h>
 
-#include "../common.hpp"
+#include "../common/src/typedefs.hpp"
 #include "session.h"
 
 namespace Access

@@ -34,18 +34,17 @@ void Account::setAccessEx(uint32 flags)
 
 void Account::exportLegacyUserData(const FilePath &path) const
 {
-	ByteBuffer buffer;
+	HLOutStream stream;
 
-	buffer.write(legacyUserDataMagic);
-	buffer.write(access.to_ullong());
-	buffer.writeNull(516); // padding
-	buffer.write(name, 134);
-	buffer.write(login, 34);
-	buffer.write(password, 32);
+	stream.write(legacyUserDataMagic);
+	stream.write(access.to_ullong());
+	stream.pad(516); // padding
+	stream.write(name, 134);
+	stream.write(login, 34);
+	stream.write(password, 32);
 
-	ByteString userData = buffer.getBytes();
 	std::ofstream outFile(path / "UserData", std::ofstream::binary);
-	outFile.write(reinterpret_cast<const char*>(userData.data()), legacyUserDataSize);
+	outFile << stream.getBuffer();
 	outFile.close();
 }
 

@@ -4,7 +4,7 @@
 #include "session.hpp"
 #include "hlconnection.hpp"
 
-Session::Session(uint16 id, PalaceConnectionPtr connection):
+Session::Session(uint16 id, HLConnectionPtr connection):
 	connection(connection),
 	lastTransactionId(0),
 	replies(0),

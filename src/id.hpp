@@ -1,7 +1,7 @@
 #ifndef _ID_H
-#define _PACKET_H
+#define _ID_H
 
-#include "common.hpp"
+#include "common/src/typedefs.hpp"
 
 enum class Magic : uint32
 {
@@ -154,4 +154,4 @@ enum class Field : uint16
 	newsArtRecurseDel
 };
 
-#endif // _PACKET_H
+#endif // _ID_H

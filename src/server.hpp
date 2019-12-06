@@ -5,10 +5,9 @@
 #include <map>
 #include <set>
 
-#include "net/forward.hpp"
 #include "user/forward.hpp"
 #include "forward.hpp"
-#include "common.hpp"
+#include "common/src/typedefs.hpp"
 
 struct TrackerInfo : std::enable_shared_from_this<TrackerInfo>
 {

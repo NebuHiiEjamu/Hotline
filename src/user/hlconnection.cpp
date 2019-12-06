@@ -1,7 +1,7 @@
 #include "hlconnection.hpp"
 #include "../net/hive.hpp"
 #include "../net/listener.hpp"
-#include "../net/packet.hpp"
+#include "../id.hpp
 #include "../server.hpp"
 
 HLConnection::HLConnection(HivePtr hive, ListenerPtr listener):
@@ -24,13 +24,13 @@ void HLConnection::onAccept(std::string_view, uint16)
 		shared_from_this()));
 }
 
-void HLConnection::onSend(const ByteString&)
+void HLConnection::onSend(const Buffer&)
 {
 }
 
-void HLConnection::onReceive(ByteString &inString)
+void HLConnection::onReceive(Buffer &buffer)
 {
-	ByteBuffer buffer(inString);
+	HLInStream stream(buffer);
 }
 
 void HLConnection::onError(Error)
