@@ -88,3 +88,13 @@ void Session::setStatusEx(uint32 flags)
 	LockGuard lock(mutex);
 	statusEx = std::bitset<UserStatusEx::all>(flags);
 }
+
+void Session::handleLogin(HLInStream &stream, const Transaction &transaction)
+{
+	uint16 fieldCount = stream.read();
+	std::string login = stream.readStringField();
+	ByteString password = stream.readStringField();
+	uint16 version = stream.readField();
+
+	
+}

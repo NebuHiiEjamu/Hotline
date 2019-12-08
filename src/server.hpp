@@ -4,6 +4,7 @@
 #include <bitset>
 #include <map>
 #include <set>
+#include <string_view>
 
 #include "user/forward.hpp"
 #include "forward.hpp"
@@ -40,6 +41,7 @@ public:
 	std::string_view getName() const;
 	std::string_view getAgreement() const;
 	std::string_view getFlatNews();
+	AccountRef getAccount(SessionRef, std::string_view, const ByteString&);
 private:
 	Server();
 private:
@@ -51,7 +53,7 @@ private:
 	std::string flatNews;
 	std::map<suint16, SessionPtr> sessionMap;
 	std::set<SessionPtr> trackerSessions;
-	std::set<AccountPtr> accounts;
+	std::map<std::string_view, AccountPtr> accountMap;
 	std::set<TrackerInfoPtr> trackers;
 	std::set<std::pair<Address, Timestamp>> bans;
 	sqlite3 *db;

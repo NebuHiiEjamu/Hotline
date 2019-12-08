@@ -60,6 +60,34 @@ template <> Timestamp&& HLInStream::read()
 	return std::chrono::system_clock::from_time_t(time);
 }
 
+template <> Transaction&& HLInStream::read()
+{
+	Transaction t;
+
+	skip(1); // padding
+	t.reply = read();
+	t.op = read();
+	t.id = read();
+	t.error = read();
+	t.totalSize = read();
+	t.thisSize = read();
+
+	return std::move(t);
+}
+
+template <class T> T HLInStream::readField()
+{
+	skip(4); // should know ID, size is irrelevant for POD
+	return read();
+}
+
+template <class String> String&& HLInStream::readStringField()
+{
+	skip(2); // should know ID
+	uint16 size = read();
+	return std::move(read(size));
+}
+
 template<> void HLOutStream::write(bool b)
 {
 	internal.put(b ? 1 : 0);
@@ -109,6 +137,17 @@ void HLOutStream::write(std::string_view s, Size padding = 0)
 	if (padding > s2.size()) pad(padding - s2.size());
 }
 
+void HLOutStream::write(const Transaction &t)
+{
+	pad(1); // padding
+	write(t.reply);
+	write(t.op);
+	write(t.id);
+	write(t.error);
+	write(t.totalSize);
+	write(t.thisSize);
+}
+
 template <class T> void HLOutStream::write(T t)
 {
 #if BOOST_ENDIAN_BIG_BYTE
@@ -116,6 +155,20 @@ template <class T> void HLOutStream::write(T t)
 #else
 	write(t, true);
 #endif
+}
+
+template <class T> void HLOutStream::write(Field field, T t)
+{
+	write(field);
+	write16(sizeof(T));
+	write(t);
+}
+
+template <class String> void HLOutStream::write(Field field, const String &s)
+{
+	write(field);
+	write16(s.size());
+	write(s);
 }
 
 void HLOutStream::write16(uint16 i)

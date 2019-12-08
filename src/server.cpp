@@ -141,6 +141,13 @@ std::string_view Server::getFlatNews()
 	return flatNews;
 }
 
+AccountRef Server::getAccount(SessionRef session, std::string_view login, const ByteString &password)
+{
+	auto account = accountMap.find(login);
+
+	if (account != accountMap.end()) return account->second;
+}
+
 ServerRef Server::getInstance()
 {
 	return instance;

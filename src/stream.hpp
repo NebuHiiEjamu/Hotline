@@ -5,6 +5,17 @@
 #include <string_view>
 
 #include "common/src/stream.hpp"
+#include "id.hpp"
+
+struct Transaction
+{
+	bool reply;
+	TransId op;
+	uint32 id;
+	uint32 error;
+	uint32 totalSize;
+	uint32 thisSize;
+};
 
 class HLInStream : public InStream
 {
@@ -14,6 +25,9 @@ public:
 	template <> Timestamp&& read();
 	template <> FilePath&& read();
 	template <> std::string&& read();
+	template <> Transaction&& read();
+	template <class T> T readField();
+	template <class String> String&& readStringField();
 };
 
 class HLOutStream : public InStream
@@ -23,7 +37,10 @@ public:
 	void write(const FilePath&);
 	void write(const Timestamp&);
 	void write(std::string_view, Size);
+	void write(const Transaction&);
 	template <class T> void write(T);
+	template <class T> void write(Field, T);
+	template <class String> void write(Field, const String&);
 	void write16(uint16); // for ambiguity
 	void write32(uint32); // for ambiguity
 };

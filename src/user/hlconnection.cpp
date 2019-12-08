@@ -51,16 +51,11 @@ void HLConnection::onReceive(Buffer &buffer)
 	}
 	else
 	{
-		stream.skip(1); // padding
-		bool isReply = stream.read();
-		TransId op = stream.read();
-		uint32 id = stream.read();
-		uint32 error = stream.read();
-		uint32 totalSize = stream.read();
-		uint32 thisSize = stream.read();
+		Transaction transaction = stream.read();
 
-		switch (op)
+		switch (transaction.op)
 		{
+			case TransId::login: session->handleLogin(stream, transaction); break;
 			default: ;
 		}
 	}

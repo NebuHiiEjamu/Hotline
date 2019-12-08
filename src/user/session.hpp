@@ -6,6 +6,7 @@
 #include "forward.hpp"
 #include "../common/src/forward.hpp"
 #include "../common/src/typedefs.hpp"
+#include "../stream.hpp"
 
 namespace UserStatus
 {
@@ -55,6 +56,9 @@ public:
 	void setStatus(uint16);
 	void setStatusEx(uint32);
 	void setIcon(uint16);
+	void sendDisconnect();
+private:
+	void handleLogin(HLInStream&, const Transaction&);
 private:
 	AccountRef account;
 	HLConnectionPtr connection;
