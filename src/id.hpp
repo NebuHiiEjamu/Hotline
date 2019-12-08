@@ -48,6 +48,15 @@ enum class TransId : uint16
 	setChatSubject,
 	agreed,
 	serverBanner,
+	iconChange,
+	nickChange,
+	fakeRed,
+	away,
+	crazyServer,
+	blockDownload,
+	visible,
+	adminSpector,
+	standardMessage,
 	getFileNameList = 200,
 	downloadFile = 202,
 	uploadFile,
@@ -61,6 +70,7 @@ enum class TransId : uint16
 	downloadInfo,
 	downloadBanner,
 	uploadFldr,
+	killDownload,
 	getUserNameList = 300,
 	notifyChangeUser,
 	notifyDeleteUser,
@@ -81,13 +91,7 @@ enum class TransId : uint16
 	postNewsArt = 410,
 	delNewsArt,
 	editNewsArt,
-	sendKeepAlive = 500,
-	index = 513,
-	indexStatus = 801,
-	emptyTrash = 803,
-	folderAccess,
-	setFldrAccessList,
-	script
+	keepConnectionAlive = 500
 };
 
 enum class Field : uint16
@@ -109,6 +113,14 @@ enum class Field : uint16
 	chatId,
 	chatSubject,
 	waitingCount,
+	iconId,
+	nickName,
+	fakeRed,
+	away,
+	blockDownload,
+	visible,
+	adminSpector,
+	standardMessage,
 	serverAgreement = 150,
 	serverBanner,
 	serverBannerType,
@@ -132,6 +144,7 @@ enum class Field : uint16
 	fileNewPath,
 	fileType,
 	quotingMsg,
+	automaticResponse,
 	fldrItemCount = 220,
 	userNameWithInfo = 300,
 	newsCatGuid = 319,
@@ -151,7 +164,11 @@ enum class Field : uint16
 	newsArtFlags,
 	newsArtParentArt,
 	newsArt1stChildArt,
-	newsArtRecurseDel
+	newsArtRecurseDel,
+	sessionKey = 3587,
+	macAlg,
+	sCipherAlg = 3771,
+	cCipherAlg
 };
 
 #endif // _ID_H

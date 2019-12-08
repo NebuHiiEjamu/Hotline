@@ -36,7 +36,6 @@ constexpr std::string_view Server::getDefaultDatabase()
 			`password` BLOB,\
 			`flags` INTEGER NOT NULL,\
 			`flags_ex` INTEGER,\
-			`folder_flags` INTEGER,\
 			`out_bps` INTEGER,\
 			`dl` INTEGER,\
 			`ul` INTEGER\

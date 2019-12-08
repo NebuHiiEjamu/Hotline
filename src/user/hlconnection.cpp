@@ -1,6 +1,7 @@
 #include "hlconnection.hpp"
-#include "../net/hive.hpp"
-#include "../net/listener.hpp"
+#include "session.hpp"
+#include "../common/src/hive.hpp"
+#include "../common/src/listener.hpp"
 #include "../id.hpp
 #include "../server.hpp"
 
@@ -31,6 +32,39 @@ void HLConnection::onSend(const Buffer&)
 void HLConnection::onReceive(Buffer &buffer)
 {
 	HLInStream stream(buffer);
+	
+	if (stream.peek() == 'T')
+	{
+		uint32 trtp = stream.read();
+		uint32 hotl = stream.read();
+		uint32 version = stream.read();
+		
+		if (static_cast<Magic>(trtp) = Magic::TRTP && static_cast<Magic>(hotl) == Magic::HOTL &&
+			version == Session::trtpVersion)
+		{
+			HLOutStream reply;
+
+			reply.write(Magic::TRTP);
+			reply.write32(errorState);
+			send(getBuffer());
+		}
+	}
+	else
+	{
+		stream.skip(1); // padding
+		bool isReply = stream.read();
+		TransId op = stream.read();
+		uint32 id = stream.read();
+		uint32 error = stream.read();
+		uint32 totalSize = stream.read();
+		uint32 thisSize = stream.read();
+
+		switch (op)
+		{
+			default: ;
+		}
+	}
+	
 }
 
 void HLConnection::onError(Error)
