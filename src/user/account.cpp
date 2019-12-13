@@ -1,4 +1,5 @@
 #include <fstream>
+#include <memory>
 
 #include "account.hpp"
 
@@ -14,10 +15,10 @@ uint32 Account::getAccessEx()
 	return static_cast<uint32>(accessEx.to_ulong());
 }
 
-std::string_view Account::getLogin()
+std::string_view&& Account::getLogin()
 {
 	LockGuard lock(mutex);
-	return login;
+	return std::move(login);
 }
 
 void Account::setAccess(uint64 flags)
@@ -51,6 +52,7 @@ void Account::exportLegacyUserData(const FilePath &path) const
 void Account::exportHxdAccess(const FilePath &path) const
 {
 	std::ofstream outFile(path / "access");
+
 	outFile << "user_visibility=" << accessEx.test(AccessEx::visibility) ? '1' : '0' << std::endl;
 	outFile << "user_color=" << accessEx.test(AccessEx::color) ? '1' : '0' << std::endl;
 	outFile << "can_spam=" << accessEx.test(AccessEx::spam) ? '1' : '0' << std::endl;

@@ -1,10 +1,16 @@
-#ifndef _FORWARD_H
-#define _FORWARD_H
+#ifndef _HL_FORWARD_H
+#define _HL_FORWARD_H
 
 #include <memory>
 
-class Server;
+class HLServer;
+class TrackerConnection;
+class TrackerSession;
 
-using ServerRef = std::weak_ptr<Server>;
+using HLServerRef = std::weak_ptr<HLServer>;
+using TrackerConnectionPtr = std::shared_ptr<TrackerConnection>;
+using TrackerConnectionRef = std::weak_ptr<TrackerConnection>;
+using TrackerSessionPtr = std::shared_ptr<TrackerSession>;
+using TrackerSessionRef = std::weak_ptr<TrackerSession>;
 
-#endif // _FORWARD_H
+#endif // _HL_FORWARD_H

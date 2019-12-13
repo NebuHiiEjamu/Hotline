@@ -1,0 +1,3 @@
+[submodule "CommonFramework"]
+	path = src/common
+	url = https://github.com/NebuHiiEjuamu/CommonFramework

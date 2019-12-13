@@ -166,10 +166,10 @@ public:
 	static constexpr uint32 legacyUserDataMagic = 0x10000;
 	static constexpr uint32 legacyUserDataSize = 734;
 
-	Account(std::string_view, std::string_view, ByteString);
+	Account(const std::string_view&, const std::string_view&, ByteString);
 	uint64 getAccess();
 	uint32 getAccessEx();
-	std::string_view getLogin();
+	std::string_view&& getLogin();
 	void setAccess(uint64);
 	void setAccessEx(uint32);
 	void exportLegacyUserData(const FilePath&) const;

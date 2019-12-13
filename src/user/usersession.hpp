@@ -1,5 +1,5 @@
-#ifndef _SESSION_H
-#define _SESSION_H
+#ifndef _USERSESSION_H
+#define _USERSESSION_H
 
 #include <bitset>
 
@@ -40,24 +40,23 @@ namespace UserStatusEx
 	};
 }
 
-class Session : public std::enable_shared_from_this<Session>
+class UserSession : public std::enable_shared_from_this<UserSession>
 {
 public:
 	static constexpr uint32 trtpVersion = 0x10002;
 	
-	Session(uint16, HLConnectionPtr);
+	UserSession(uint16, HLConnectionPtr);
 	uint16 getId() const;
 	uint16 getIcon();
 	uint16 getStatus();
 	uint32 getStatusEx();
 	std::string&& getClientInfoText();
 	std::string&& getVersionString() const;
-	//std::string_view getClient() const;
+	//std::string_view&& getClient() const;
 	void setStatus(uint16);
 	void setStatusEx(uint32);
 	void setIcon(uint16);
 	void sendDisconnect();
-private:
 	void handleLogin(HLInStream&, const Transaction&);
 private:
 	AccountRef account;
@@ -75,4 +74,4 @@ private:
 	uint16 version;
 };
 
-#endif // _SESSION_H
+#endif // _USERSESSION_H

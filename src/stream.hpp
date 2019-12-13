@@ -36,7 +36,7 @@ public:
 	void write(bool);
 	void write(const FilePath&);
 	void write(const Timestamp&);
-	void write(std::string_view, Size);
+	void write(const std::string_view&, Size);
 	void write(const Transaction&);
 	template <class T> void write(T);
 	template <class T> void write(Field, T);

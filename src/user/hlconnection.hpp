@@ -5,20 +5,20 @@
 #include "../common/src/forward.hpp"
 #include "../common/src/connection.hpp"
 
-class HLConnection : public Connection
+class HLConnection : public Connection<boost::asio::ip::tcp>
 {
 public:
 	HLConnection(HivePtr, ListenerPtr);
-	void setSession(SessionRef);
+	void setSession(UserSessionRef);
 protected:
-	void onAccept(std::string_view, uint16) override;
+	void onAccept(const std::string_view&, uint16) override;
 	void onSend(const Buffer&) override;
 	void onReceive(Buffer&) override;
 	void onError(Error) override;
 	void onDisconnect() override;
 private:
-	SessionRef session;
+	UserSessionRef session;
 	ListenerPtr listener;
 };
 
-#endif // _PALACECONNECTION_H
+#endif // _HLCONNECTION_H

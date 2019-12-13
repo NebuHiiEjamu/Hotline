@@ -1,11 +1,13 @@
 #include <boost/endian/conversion.hpp>
+#include <fmt/core.h>
 #include <sqlite3.h>
 
-#include "server.hpp"
+#include "hlserver.hpp"
+#include "common/src/hive.hpp"
 #include "user/hlconnection.hpp"
 #include "user/session.hpp"
 
-uint32 Server::kdxDecrypt(uint32 key, ByteString &inString)
+/*uint32 HLServer::kdxDecrypt(uint32 key, ByteString &inString)
 {
 	uint32 *data32 = reinterpret_cast<uint32*>(inString.data());
 	uint32 size = inString.size() >> 2;
@@ -17,16 +19,16 @@ uint32 Server::kdxDecrypt(uint32 key, ByteString &inString)
 	}
 
 	return key;
-}
+}*/
 
-void Server::transform(ByteString &inString)
+void HLServer::transform(ByteString &inString)
 {
 	for (auto &b : inString) b = ~b;
 }
 
-std::shared_ptr<Server> Server::instance = std::make_shared<Server>();
+std::shared_ptr<HLServer> HLServer::instance = std::make_shared<HLServer>();
 
-constexpr std::string_view Server::getDefaultDatabase()
+constexpr std::string_view HLServer::getDefaultDatabase()
 {
 	return "DROP TABLE IF EXISTS `accounts`;\
 		CREATE TABLE `accounts` (\
@@ -88,67 +90,84 @@ constexpr std::string_view Server::getDefaultDatabase()
 				('guest', 'Guest', NULL, 2337381538192162816);";
 }
 
-Server::Server():
+HLServer::HLServer():
 	nextUserId(1)
 {
 }
 
-bool Server::createSession(suint16 id, HLConnectionPtr connection)
+bool HLServer::createSession(suint16 id, HLConnectionPtr connection)
 {
 	LockGuard lock(mutex);
 	SessionPtr newSession = std::make_shared<Session>(id, connection);
+	
 	connection->setSession(newSession);
 	sessionMap[id] = newSession;
+	logger->info("Incoming connection from {} with session ID {}",
+		connection->getAddress().to_string(), id);
 
 	return true;
 }
 
-void Server::removeSession(suint16 id)
+void HLServer::removeSession(uint16 id)
 {
 	sessionMap.erase(id);
 }
 
-uint16 Server::getNextUserId()
+uint16 HLServer::getNextUserId()
 {
 	LockGuard lock(mutex);
 	return nextUserId++;
 }
 
-std::string_view Server::getName() const
+std::string_view& HLServer::getName() const
 {
 	return name;
 }
 
-std::string_view Server::getAgreement() const
+std::string_view& HLServer::getAgreement() const
 {
 	return agreement;
 }
 
-std::string_view Server::getDescription() const
+std::string_view& HLServer::getDescription() const
 {
 	return description;
 }
 
-uint16 Server::getUserCount()
+uint16 HLServer::getUserCount()
 {
 	LockGuard lock(mutex);
 	return static_cast<uint16>(sessionMap.size());
 }
 
-std::string_view Server::getFlatNews()
+std::string_view& HLServer::getFlatNews()
 {
 	LockGuard lock(mutex);
 	return flatNews;
 }
 
-AccountRef Server::getAccount(SessionRef session, std::string_view login, const ByteString &password)
+AccountRef HLServer::getAccount(SessionRef session, const std::string_view &login,
+	const ByteString &password)
 {
 	auto account = accountMap.find(login);
 
-	if (account != accountMap.end()) return account->second;
+	if (account != accountMap.end())
+	{
+		logger->debug("Account found for session ID {}: {}", session->getId(), login);
+		return account->second;
+	}
+	else
+	{
+		logger->warn("Account not found for session ID {}: {}", session->getId(), login);
+		return nullptr;
+	}
 }
 
-ServerRef Server::getInstance()
+void HLServer::run(int argc, char **argv)
+{
+}
+
+HLServerRef HLServer::getInstance()
 {
 	return instance;
 }

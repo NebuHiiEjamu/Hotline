@@ -125,7 +125,7 @@ template<> void HLOutStream::write(const Timestamp &time)
 		(timeTm.tm_mday - 1)))))));
 }
 
-void HLOutStream::write(std::string_view s, Size padding = 0)
+void HLOutStream::write(const std::string_view &s, Size padding = 0)
 {
 	// strip carriage returns (might have \r\n), make line feeds into carriage returns
 	std::string s2(s);

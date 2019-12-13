@@ -1,5 +1,5 @@
 #include "hlconnection.hpp"
-#include "session.hpp"
+#include "usersession.hpp"
 #include "../common/src/hive.hpp"
 #include "../common/src/listener.hpp"
 #include "../id.hpp
@@ -32,15 +32,18 @@ void HLConnection::onSend(const Buffer&)
 void HLConnection::onReceive(Buffer &buffer)
 {
 	HLInStream stream(buffer);
+	LoggerRef log = HLServer::getInstance()->getLogger();
 	
 	if (stream.peek() == 'T')
 	{
 		uint32 trtp = stream.read();
 		uint32 hotl = stream.read();
 		uint32 version = stream.read();
+		log->debug("Session {}: Got initial data: {0:X} {0:X} {0:X}", session->getId(),
+			trtp, hotl, version);
 		
 		if (static_cast<Magic>(trtp) = Magic::TRTP && static_cast<Magic>(hotl) == Magic::HOTL &&
-			version == Session::trtpVersion)
+			version == UserSession::trtpVersion)
 		{
 			HLOutStream reply;
 
