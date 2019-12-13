@@ -34,7 +34,7 @@ public:
 	std::string_view& getName() const;
 	std::string_view& getAgreement() const;
 	std::string_view& getFlatNews();
-	AccountRef getAccount(SessionRef, const std::string_view&, const ByteString&);
+	AccountRef getAccount(UserSessionRef, const std::string_view&, const ByteString&);
 	void run(int, char**) override;
 private:
 	HLServer();

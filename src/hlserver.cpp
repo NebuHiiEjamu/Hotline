@@ -5,7 +5,7 @@
 #include "hlserver.hpp"
 #include "common/src/hive.hpp"
 #include "user/hlconnection.hpp"
-#include "user/session.hpp"
+#include "user/usersession.hpp"
 
 /*uint32 HLServer::kdxDecrypt(uint32 key, ByteString &inString)
 {
@@ -98,7 +98,7 @@ HLServer::HLServer():
 bool HLServer::createSession(suint16 id, HLConnectionPtr connection)
 {
 	LockGuard lock(mutex);
-	SessionPtr newSession = std::make_shared<Session>(id, connection);
+	SessionPtr newSession(new UserSession(id, connection));
 	
 	connection->setSession(newSession);
 	sessionMap[id] = newSession;
@@ -146,7 +146,7 @@ std::string_view& HLServer::getFlatNews()
 	return flatNews;
 }
 
-AccountRef HLServer::getAccount(SessionRef session, const std::string_view &login,
+AccountRef HLServer::getAccount(UserSessionRef session, const std::string_view &login,
 	const ByteString &password)
 {
 	auto account = accountMap.find(login);
