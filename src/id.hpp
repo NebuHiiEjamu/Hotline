@@ -25,6 +25,7 @@ enum class Magic : uint32
 
 enum class TransId : uint16
 {
+	reply = 0,
 	error = 100,
 	getMsgs,
 	newMsg,

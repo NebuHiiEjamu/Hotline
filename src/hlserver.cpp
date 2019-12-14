@@ -1,11 +1,13 @@
 #include <boost/endian/conversion.hpp>
 #include <fmt/core.h>
+#include <limits>
+#include <random>
 #include <sqlite3.h>
 
 #include "hlserver.hpp"
 #include "common/src/hive.hpp"
 #include "user/hlconnection.hpp"
-#include "user/usersession.hpp"
+#include "user/session.hpp"
 
 /*uint32 HLServer::kdxDecrypt(uint32 key, ByteString &inString)
 {
@@ -93,6 +95,13 @@ constexpr std::string_view HLServer::getDefaultDatabase()
 HLServer::HLServer():
 	nextUserId(1)
 {
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<uint32> dist(std::numeric_limits<uint32>::min(),
+		std::numeric_limits<uint32>::max()),
+	randomSeed = dist(mt);
+
+	logger->debug("Random seed for tracker connections is {}", randomSeed);
 }
 
 bool HLServer::createSession(suint16 id, HLConnectionPtr connection)
@@ -117,6 +126,16 @@ uint16 HLServer::getNextUserId()
 {
 	LockGuard lock(mutex);
 	return nextUserId++;
+}
+
+uint16 HLServer::getPort() const
+{
+	return port;
+}
+
+uint32 HLServer::getRandomSeed() const
+{
+	return randomSeed;
 }
 
 std::string_view& HLServer::getName() const

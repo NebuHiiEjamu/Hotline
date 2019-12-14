@@ -17,7 +17,7 @@ protected:
 	void onError(Error) override;
 	void onDisconnect() override;
 private:
-	UserSessionRef session;
+	SessionRef session;
 	ListenerPtr listener;
 };
 

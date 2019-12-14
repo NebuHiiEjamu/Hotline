@@ -141,7 +141,7 @@ void HLOutStream::write(const Transaction &t)
 {
 	pad(1); // padding
 	write(t.reply);
-	write(t.op);
+	write(t.op)
 	write(t.id);
 	write(t.error);
 	write(t.totalSize);

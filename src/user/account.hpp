@@ -169,7 +169,8 @@ public:
 	Account(const std::string_view&, const std::string_view&, ByteString);
 	uint64 getAccess();
 	uint32 getAccessEx();
-	std::string_view&& getLogin();
+	uint16 getColor();
+	std::string_view& getLogin();
 	void setAccess(uint64);
 	void setAccessEx(uint32);
 	void exportLegacyUserData(const FilePath&) const;

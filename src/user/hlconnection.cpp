@@ -21,7 +21,7 @@ void HLConnection::onAccept(std::string_view, uint16)
 	HLConnectionPtr connection(new HLConnection(hive, listener));
 	listener->accept(connection);
 
-	Server::getInstance()->createSession(id, std::dynamic_pointer_cast<HLConnection>
+	HLServer::getInstance()->createSession(id, std::dynamic_pointer_cast<HLConnection>
 		shared_from_this()));
 }
 
@@ -54,11 +54,14 @@ void HLConnection::onReceive(Buffer &buffer)
 	}
 	else
 	{
-		Transaction transaction = stream.read();
+		Transaction trans = stream.read();
+		log->debug("Session {}: Got transaction: <reply: {}, type: {}, ID: {}, error: {}, total: {}, data: {}>",
+			trans.reply, static_cast<uint16>(trans.op), trans.id, trans.error, trans.totalSize,
+			trans.thisSize);
 
-		switch (transaction.op)
+		switch (trans.op)
 		{
-			case TransId::login: session->handleLogin(stream, transaction); break;
+			case TransId::login: session->handleLogin(stream, trans); break;
 			default: ;
 		}
 	}

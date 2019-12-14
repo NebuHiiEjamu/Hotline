@@ -3,7 +3,6 @@
 
 #include <bitset>
 #include <map>
-#include <random>
 #include <set>
 #include <string_view>
 
@@ -13,12 +12,12 @@
 #include "common/src/typedefs.hpp"
 
 struct sqlite3;
-using SeedDistribution = std::uniform_int_distribution<uint32>;
 
 class HLServer : public Server
 {
 public:
 	static constexpr uint16 version = 197;
+	static constexpr uint16 defaultPort = 5500;
 	
 	static constexpr std::string_view getDefaultDatabase();
 	static HLServerRef getInstance();
@@ -30,11 +29,13 @@ public:
 	void removeSession(uint16);
 	uint16 getNextUserId();
 	uint16 getUserCount();
+	uint16 getPort() const;
+	uint32 getRandomSeed() const;
 	std::string_view& getDescription() const;
 	std::string_view& getName() const;
 	std::string_view& getAgreement() const;
 	std::string_view& getFlatNews();
-	AccountRef getAccount(UserSessionRef, const std::string_view&, const ByteString&);
+	AccountRef getAccount(SessionRef, const std::string_view&, const ByteString&);
 	void run(int, char**) override;
 private:
 	HLServer();
@@ -45,16 +46,15 @@ private:
 	std::string description;
 	std::string agreement;
 	std::string flatNews;
-	std::map<suint16, UserSessionPtr> sessionMap;
-	std::set<TrackerSessionPtr> trackerSessions;
+	std::map<suint16, SessionPtr> sessionMap;
+	std::set<TrackerConnectionPtr> trackerConnections;
 	std::map<std::string_view, AccountPtr> accountMap;
 	std::set<std::pair<Address, Timestamp>> bans;
-	std::random_device seedDevice;
-	std::mt19937 seedEngine;
-	SeedDistribution seedGenerator;
 	sqlite3 *db;
 	std::mutex mutex;
+	uint32 randomSeed;
+	uint16 port;
 	suint16 nextUserId;
 };
 
-#endif // _SERVER_H
+#endif // _HLSERVER_H
