@@ -1,5 +1,5 @@
-#ifndef _STREAM_H
-#define _STREAM_H
+#ifndef _HLSTREAM_H
+#define _HLSTREAM_H
 
 #include <string>
 #include <string_view>
@@ -45,4 +45,4 @@ public:
 	void write32(uint32); // for ambiguity
 };
 
-#endif // _STREAM_H
+#endif // _HLSTREAM_H

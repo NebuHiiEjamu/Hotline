@@ -21,16 +21,16 @@ public:
 	
 	static constexpr std::string_view getDefaultDatabase();
 	static HLServerRef getInstance();
+	static uint32 getRandomSeed();
 	//static uint32 kdxDecrypt(uint32, ByteString&);
 	static void transform(ByteString&);
 
 	~HLServer();
-	bool createSession(suint16, HLConnectionPtr);
+	bool createSession(uint16, HLConnectionPtr);
 	void removeSession(uint16);
 	uint16 getNextUserId();
 	uint16 getUserCount();
 	uint16 getPort() const;
-	uint32 getRandomSeed() const;
 	std::string_view& getDescription() const;
 	std::string_view& getName() const;
 	std::string_view& getAgreement() const;
@@ -46,13 +46,12 @@ private:
 	std::string description;
 	std::string agreement;
 	std::string flatNews;
-	std::map<suint16, SessionPtr> sessionMap;
+	std::map<uint16, SessionPtr> sessionMap;
 	std::set<TrackerConnectionPtr> trackerConnections;
 	std::map<std::string_view, AccountPtr> accountMap;
 	std::set<std::pair<Address, Timestamp>> bans;
 	sqlite3 *db;
 	std::mutex mutex;
-	uint32 randomSeed;
 	uint16 port;
 	suint16 nextUserId;
 };

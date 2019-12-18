@@ -1,6 +1,9 @@
 #ifndef _ID_H
 #define _ID_H
 
+#include <map>
+#include <string_view>
+
 #include "common/src/typedefs.hpp"
 
 enum class Magic : uint32
@@ -92,7 +95,16 @@ enum class TransId : uint16
 	postNewsArt = 410,
 	delNewsArt,
 	editNewsArt,
-	keepConnectionAlive = 500
+	keepConnectionAlive = 500,
+	iconList = 1861,
+	iconSet,
+	iconGet,
+	iconChange2,
+	linkLogin = 2048,
+	linkJoin,
+	linkLeave,
+	linkPacket,
+	task = 65535
 };
 
 enum class Field : uint16
@@ -166,10 +178,47 @@ enum class Field : uint16
 	newsArtParentArt,
 	newsArt1stChildArt,
 	newsArtRecurseDel,
+	gifIcon = 768,
+	gifList,
+	newsLimit = 800,
+	ircOldNick = 1024,
+	color = 1280,
+	packet = 1536,
 	sessionKey = 3587,
 	macAlg,
 	sCipherAlg = 3771,
 	cCipherAlg
+};
+
+enum class IrcId : Byte
+{
+	nick,
+	ping,
+	lagTime,
+	privMsg,
+	who,
+	whoIs,
+	kick,
+	mode,
+	join,
+	part,
+	invite,
+	quit
+};
+
+constexpr std::map<IrcId, std::string_view> ircMap = {
+	{ IrcId::nick, "NICK" },
+	{ IrcId::ping, "PING" },
+	{ IrcId::lagTime, "LAGTIME" },
+	{ IrcId::privMsg, "PRIVMSG" },
+	{ IrcId::who, "WHO" },
+	{ IrcId::whoIs, "WHOIS" },
+	{ IrcId::kick, "KICK" },
+	{ IrcId::mode, "MODE" },
+	{ IrcId::join, "JOIN" },
+	{ IrcId::part, "PART" },
+	{ IrcId::invite, "INVITE" },
+	{ IrcId::quit, "QUIT" }
 };
 
 #endif // _ID_H

@@ -8,8 +8,8 @@
 class HLConnection : public Connection<boost::asio::ip::tcp>
 {
 public:
-	HLConnection(HivePtr, ListenerPtr);
-	void setSession(UserSessionRef);
+	HLConnection(HivePtr, AcceptorPtr);
+	void setSession(SessionRef);
 protected:
 	void onAccept(const std::string_view&, uint16) override;
 	void onSend(const Buffer&) override;
@@ -18,7 +18,7 @@ protected:
 	void onDisconnect() override;
 private:
 	SessionRef session;
-	ListenerPtr listener;
+	AcceptorPtr acceptor;
 };
 
 #endif // _HLCONNECTION_H

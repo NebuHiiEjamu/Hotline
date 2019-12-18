@@ -4,7 +4,7 @@
 #include <ctime>
 #include <utility>
 
-#include "common.hpp"
+#include "stream.hpp"
 
 using boost::endian;
 

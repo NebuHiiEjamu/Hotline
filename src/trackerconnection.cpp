@@ -1,6 +1,5 @@
 #include "trackerconnection.hpp"
 #include "common/src/hive.hpp"
-#include "common/src/listener.hpp"
 #include "hlserver.hpp"
 #include "stream.hpp"
 
@@ -9,7 +8,7 @@ TrackerConnection::TrackerConnection(HiveRef hive):
 {
 }
 
-void TrackerConnection::onAccept(std::string_view, uint16)
+void TrackerConnection::onConnect(const std::string_view&, uint16)
 {
 	TrackerConnectionPtr connection(new TrackerConnection(hive));
 	Buffer buffer;
@@ -18,11 +17,11 @@ void TrackerConnection::onAccept(std::string_view, uint16)
 	std::string_view name = inst->getName();
 	std::string_view description = inst->getDescription();
 
-	stream.write16(1); // ?
+	stream.write16(1); // version?
 	stream.write(inst->getPort());
 	stream.write(inst->getUserCount());
 	stream.pad(2); // ?
-	stream.write(inst->getRandomSeed());
+	stream.write(HLServer::getRandomSeed());
 	stream.write(name, name.size());
 	stream.write(description, description.size());
 	send(buffer);

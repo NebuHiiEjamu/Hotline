@@ -9,6 +9,11 @@
 #include "user/hlconnection.hpp"
 #include "user/session.hpp"
 
+static std::random_device randomDevice;
+static std::mt19937 randomGenerator(randomDevice);
+static std::uniform_int_distribution<uint32> randomDistributor(std::numeric_limits<uint32>::min(),
+	std::numeric_limits<uint32>::max());
+
 /*uint32 HLServer::kdxDecrypt(uint32 key, ByteString &inString)
 {
 	uint32 *data32 = reinterpret_cast<uint32*>(inString.data());
@@ -95,19 +100,12 @@ constexpr std::string_view HLServer::getDefaultDatabase()
 HLServer::HLServer():
 	nextUserId(1)
 {
-	std::random_device rd;
-	std::mt19937 mt(rd());
-	std::uniform_int_distribution<uint32> dist(std::numeric_limits<uint32>::min(),
-		std::numeric_limits<uint32>::max()),
-	randomSeed = dist(mt);
-
-	logger->debug("Random seed for tracker connections is {}", randomSeed);
 }
 
-bool HLServer::createSession(suint16 id, HLConnectionPtr connection)
+bool HLServer::createSession(uint16 id, HLConnectionPtr connection)
 {
 	LockGuard lock(mutex);
-	SessionPtr newSession(new UserSession(id, connection));
+	SessionPtr newSession(new Session(id, connection));
 	
 	connection->setSession(newSession);
 	sessionMap[id] = newSession;
@@ -133,9 +131,9 @@ uint16 HLServer::getPort() const
 	return port;
 }
 
-uint32 HLServer::getRandomSeed() const
+uint32 HLServer::getRandomSeed()
 {
-	return randomSeed;
+	return randomDistributor(randomGenerator);
 }
 
 std::string_view& HLServer::getName() const

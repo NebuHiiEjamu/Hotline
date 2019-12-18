@@ -12,7 +12,7 @@ public:
 	
 	TrackerConnection(HiveRef);
 protected:
-	void onAccept(const std::string_view&, uint16) override;
+	void onConnect(const std::string_view&, uint16) override;
 	void onSend(const Buffer&) override;
 	void onReceive(Buffer&) override;
 	void onError(Error) override;

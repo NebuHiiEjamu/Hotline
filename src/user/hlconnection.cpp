@@ -1,8 +1,8 @@
 #include "hlconnection.hpp"
-#include "usersession.hpp"
+#include "session.hpp"
 #include "../common/src/hive.hpp"
 #include "../common/src/listener.hpp"
-#include "../id.hpp
+#include "../id.hpp"
 #include "../server.hpp"
 
 HLConnection::HLConnection(HivePtr hive, ListenerPtr listener):
@@ -16,7 +16,7 @@ void HLConnection::setSession(SessionRef session)
 	this->session = session;
 }
 
-void HLConnection::onAccept(std::string_view, uint16)
+void HLConnection::onAccept(const std::string_view&, uint16)
 {
 	HLConnectionPtr connection(new HLConnection(hive, listener));
 	listener->accept(connection);
@@ -39,7 +39,7 @@ void HLConnection::onReceive(Buffer &buffer)
 		uint32 trtp = stream.read();
 		uint32 hotl = stream.read();
 		uint32 version = stream.read();
-		log->debug("Session {}: Got initial data: {0:X} {0:X} {0:X}", session->getId(),
+		log->debug("Session {}: Got initial data: {0:X}{0:X}{0:X}", session->getId(),
 			trtp, hotl, version);
 		
 		if (static_cast<Magic>(trtp) = Magic::TRTP && static_cast<Magic>(hotl) == Magic::HOTL &&
