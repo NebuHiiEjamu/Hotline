@@ -1,11 +1,12 @@
 #ifndef _ACCOUNT_H
 #define _ACCOUNT_H
 
+#include <array>
 #include <bitset>
 #include <boost/predef.h>
 
 #include "../common/src/typedefs.hpp"
-#include "session.h"
+#include "session.hpp"
 
 namespace Access
 {
@@ -53,6 +54,7 @@ namespace Access
 		uploadFolder,
 		downloadFolder,
 		sendMessage,
+		// --- GLoarb ---
 		fakeRed,
 		away,
 		changeNick,
@@ -108,14 +110,15 @@ namespace Access
 		newsCreateCat,
 		newsDeleteArt,
 		broadcast,
-		blockDownload,
+		blockDownload, // GLoarb
 		refuseChat,
-		speakBefore,
-		changeIcon,
-		changeNick,
-		away,
-		fakeRed,
+		speakBefore, // GLoarb
+		changeIcon, // GLoarb
+		changeNick, // GLoarb
+		away, // GLoarb
+		fakeRed, // GLoarb
 		sendMessage,
+		 // --- GLoarb ---
 		postBefore,
 		adminSpector,
 		dontQueue,
@@ -132,30 +135,56 @@ namespace AccessEx
 {
 	enum
 	{
-		privateChat = 0,
-		message,
-		getUserList,
-		getFileList,
-		getFileInfo,
-		getFileHash,
-		login,
-		visibility,
-		color,
-		spam,
-		setTopic,
+		chatPrivate = 0,
+		msg,
+		userGetList,
+		fileList,
+		fileGetInfo,
+		fileHash,
+		canLogin,
+		userVisibility,
+		userColor,
+		canSpam,
+		setSubject,
 		debug,
-		access,
+		userAccess,
 		accessVolatile,
-		own,
-		owned,
-		editAccount,
-		getAddressInfo,
-		getLoginInfo,
-		lockName,
-		agree,
-		ping,
-		getBanner,
+		user0wn,
+		is0wn3d,
+		manageUsers,
+		infoGetAddress,
+		infoGetLogin,
+		nameLock,
+		canAgree,
+		canPing,
+		bannerGet [[deprecated("Insecure and annoying")]],
 		ignoreQueue,
+		all
+	};
+}
+
+namespace FolderAccess
+{
+	enum
+	{
+		seeFolder = 0,
+		createFolders,
+		uploadFiles,
+		uploadFolders,
+		moveInItems,
+		aliasInItems,
+		duplicateInItems,
+		deleteFiles = 9,
+		deleteFolders,
+		moveOutItems,
+		seeFolderContent = 19,
+		downloadFiles,
+		downloadFolders,
+		aliasOutItems,
+		duplicateOutItems,
+		renameItems = 29,
+		setItemAttributes,
+		modifyFileContents,
 		all
 	};
 }
@@ -164,7 +193,10 @@ class Account : public std::enable_shared_from_this<Account>
 {
 public:
 	static constexpr uint32 legacyUserDataMagic = 0x10000;
-	static constexpr uint32 legacyUserDataSize = 734;
+	static constexpr Size legacyUserDataSize = 734;
+	static constexpr Size maxLoginSize = 34;
+	static constexpr Size maxNameSize = 32;
+	static constexpr Size maxPasswordSize = 32;
 
 	Account(const std::string_view&, const std::string_view&, ByteString);
 	uint64 getAccess();
@@ -183,11 +215,12 @@ private:
 	std::mutex mutex;
 	std::bitset<Access::all> access;
 	std::bitset<AccessEx::all> accessEx;
+	std::bitset<FolderAccess::all> folderAccess;
 	std::bitset<UserStatusEx::all> statusEx;
 	uint32 downloads;
 	uint32 uploads;
 	uint32 outBps;
-	uint16 icon;
+	[[deprecated("Superseded by custom icons")]] uint16 icon;
 	uint16 color;
 };
 

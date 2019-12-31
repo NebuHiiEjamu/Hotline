@@ -49,6 +49,17 @@ constexpr std::string_view HLServer::getDefaultDatabase()
 			`dl` INTEGER,\
 			`ul` INTEGER\
 		);\
+		DROP TABLE IF EXISTS `files`;\
+		CREATE TABLE `files` (\
+			`id` INTEGER PRIMARY KEY AUTOINCREMENT,\
+			`path` TEXT NOT NULL,\
+			`type` VARCHAR(4),\
+			`creator` VARCHAR(4),\
+			`comment` TEXT,\
+			`md5` BLOB NOT NULL,\
+			`haval` BLOB NOT NULL,\
+			`sha1` BLOB NOT NULL\
+		);\
 		\
 		DROP TABLE IF EXISTS `news_bundles`;\
 		CREATE TABLE `news_bundles` (\
@@ -93,7 +104,7 @@ constexpr std::string_view HLServer::getDefaultDatabase()
 		\
 		\
 		INSERT INTO `accounts` (login, name, password, flags)\
-			VALUES ('admin', 'Administrator', x'9E9B929691', 18443313597422501888),\
+			VALUES ('admin', 'Administrator', x'9E9B929691', 18443313528711413248),\
 				('guest', 'Guest', NULL, 2337381538192162816);";
 }
 

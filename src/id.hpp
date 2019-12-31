@@ -1,10 +1,11 @@
 #ifndef _ID_H
 #define _ID_H
 
-#include <map>
-#include <string_view>
+#include <utility>
 
 #include "common/src/typedefs.hpp"
+
+static const char *lpszNone = "NONE";
 
 enum class Magic : uint32
 {
@@ -19,11 +20,12 @@ enum class Magic : uint32
 	INFO = 0x494E464F,
 	JPEG = 0x4A504547,
 	MWIN = 0x4D57494E,
-	PICT = 0x50494354,
+	PICT [[deprecated("Discontinued and unused")]] = 0x50494354,
 	RFLT = 0x52464C54,
 	TRTP = 0x54525450,
 	URL = 0x55524C20,
-	fldr = 0x666C6472
+	fldr = 0x666C6472,
+	harc = 0x68617263
 };
 
 enum class TransId : uint16
@@ -51,16 +53,16 @@ enum class TransId : uint16
 	notifyChatSubject,
 	setChatSubject,
 	agreed,
-	serverBanner,
-	iconChange,
-	nickChange,
-	fakeRed,
-	away,
-	crazyServer,
-	blockDownload,
-	visible,
-	adminSpector,
-	standardMessage,
+	serverBanner [[deprecated("Insecure and annoying")]],
+	gloarbIconChange [[deprecated("Superseded by custom icons")]], // GLoarb
+	nickChange, // GLoarb
+	fakeRed, // GLoarb
+	away, // GLoarb
+	crazyServer, // GLoarb
+	blockDownload, // GLoarb
+	visible, // GLoarb
+	adminSpector, // GLoarb
+	standardMessage, // GLoarb
 	getFileNameList = 200,
 	downloadFile = 202,
 	uploadFile,
@@ -72,7 +74,7 @@ enum class TransId : uint16
 	makeFileAlias,
 	downloadFldr,
 	downloadInfo,
-	downloadBanner,
+	downloadBanner [[deprecated("Insecure and annoying")]],
 	uploadFldr,
 	killDownload,
 	getUserNameList = 300,
@@ -94,17 +96,28 @@ enum class TransId : uint16
 	getNewsArtData = 400,
 	postNewsArt = 410,
 	delNewsArt,
-	editNewsArt,
+	editNewsArt, // GLoarb
 	keepConnectionAlive = 500,
-	iconList = 1861,
-	iconSet,
-	iconGet,
-	iconChange2,
+	index = 513, // Javaline
+	indexStatus = 801, // Javaline
+	emptyTrash = 803, // Javaline
+	folderAccess, // Javaline
+	setFldrAccessList, // Javaline
+	script, // Javaline
+	iconList = 1861, // Avaraline
+	iconSet, // Avaraline
+	iconGet, // Avaraline
+	avaraIconChange, // Avaraline
 	linkLogin = 2048,
 	linkJoin,
 	linkLeave,
 	linkPacket,
-	task = 65535
+	newsGetUnformatted = 2149, // Avaraline
+	userInfoUnformatted = 2160, // Avaraline
+	accountSelfModify = 2304, // Avaraline
+	permissionList, // Avaraline
+	fileHash = 3808, // HOPE
+	task = 65535 // phxd
 };
 
 enum class Field : uint16
@@ -113,10 +126,10 @@ enum class Field : uint16
 	data,
 	userName,
 	userId,
-	userIconId,
+	userIconId [[deprecated("Superseded by custom icons")]],
 	userLogin,
 	userPassword,
-	refNum,
+	transferId,
 	transferSize,
 	chatOptions,
 	userAccess,
@@ -126,21 +139,21 @@ enum class Field : uint16
 	chatId,
 	chatSubject,
 	waitingCount,
-	iconId,
-	nickName,
-	fakeRed,
-	away,
-	blockDownload,
-	visible,
-	adminSpector,
-	standardMessage,
+	iconId [[deprecated("Superseded by custom icons")]], // GLoarb
+	nickName, // GLoarb
+	fakeRed, // GLoarb
+	away, // GLoarb
+	blockDownload, // GLoarb
+	visible, // GLoarb
+	adminSpector, // GLoarb
+	standardMessage, // GLoarb
 	serverAgreement = 150,
-	serverBanner,
-	serverBannerType,
-	serverBannerUrl,
+	serverBanner [[deprecated("Insecure and annoying")]],
+	serverBannerType [[deprecated("Insecure and annoying")]],
+	serverBannerUrl [[deprecated("Insecure and annoying")]],
 	noServerAgreement,
 	vers = 160,
-	communityBannerId,
+	communityBannerId [[deprecated("Insecure and annoying")]],
 	serverName,
 	fileNameWithInfo = 200,
 	fileName,
@@ -161,7 +174,7 @@ enum class Field : uint16
 	fldrItemCount = 220,
 	userNameWithInfo = 300,
 	newsCatGuid = 319,
-	newsCatListData,
+	newsCatListData [[deprecated("Hotline 1.5 beta only")]],
 	newsArtListData,
 	newsCatName,
 	newsCatListData15,
@@ -178,47 +191,179 @@ enum class Field : uint16
 	newsArtParentArt,
 	newsArt1stChildArt,
 	newsArtRecurseDel,
-	gifIcon = 768,
-	gifList,
+	gifIcon = 768, // Avaraline
+	gifList, // Avaraline
+	offset = 793, // Avaraline
+	limit, // Avaraline
+	count, // Avaraline
 	newsLimit = 800,
 	ircOldNick = 1024,
-	color = 1280,
+	search = 1024, // Avaraline
+	color = 1280, // Avaraline
 	packet = 1536,
-	sessionKey = 3587,
-	macAlg,
-	sCipherAlg = 3771,
-	cCipherAlg
+	post = 2048, // Avaraline
+	postId, // Avaraline
+	permGroup = 2128, // Avaraline
+	perm, // Avaraline
+	ip = 2304, // Avaraline
+	sessionKey = 3587, // HOPE
+	macAlg, // HOPE
+	sid = 3687, // HOPE
+	hashMd5 = 3712, // HOPE
+	hashHaval, // HOPE
+	hashSha1, // HOPE
+	iconCicn [[deprecated("Legacy Mac resource fork data")]] = 3728, // HOPE
+	chatAway = 3745, // HOPE
+	sCipherAlg = 3777, // HOPE
+	cCipherAlg, // HOPE
+	sCipherMode, // HOPE
+	cCipherMode, // HOPE
+	sCipherIVec, // HOPE
+	cCipherIVec, // HOPE
+	sChecksumAlg, // HOPE
+	cChecksumAlg, // HOPE
+	sCompressAlg, // HOPE
+	cCompressAlg // HOPE
 };
 
-enum class IrcId : Byte
+enum class Compression : Byte
 {
-	nick,
-	ping,
-	lagTime,
-	privMsg,
-	who,
-	whoIs,
-	kick,
-	mode,
-	join,
-	part,
-	invite,
-	quit
+	gzip,
+	none
 };
 
-constexpr std::map<IrcId, std::string_view> ircMap = {
-	{ IrcId::nick, "NICK" },
-	{ IrcId::ping, "PING" },
-	{ IrcId::lagTime, "LAGTIME" },
-	{ IrcId::privMsg, "PRIVMSG" },
-	{ IrcId::who, "WHO" },
-	{ IrcId::whoIs, "WHOIS" },
-	{ IrcId::kick, "KICK" },
-	{ IrcId::mode, "MODE" },
-	{ IrcId::join, "JOIN" },
-	{ IrcId::part, "PART" },
-	{ IrcId::invite, "INVITE" },
-	{ IrcId::quit, "QUIT" }
+static const std::pair<Compression, const char*> compressionMap[] =
+{
+	{ Compression::gzip, "GZIP" },
+	{ Compression::none, lpszNone }
+};
+
+enum class Cipher : Byte
+{
+	blowfish,
+	idea,
+	none,
+	rc4
+};
+
+static const std::pair<Cipher, const char*> cipherMap[] =
+{
+	{ Cipher::blowfish, "BLOWFISH" },
+	{ Cipher::idea, "IDEA" },
+	{ Cipher::none, lpszNone },
+	{ Cipher::rc4, "RC4" }
+};
+
+enum class IrcStrId : Byte
+{
+	invite,
+	join,
+	kick,
+	lagTime,
+	mode,
+	nick,
+	part,
+	ping,
+	privMsg,
+	quit,
+	who,
+	whoIs
+};
+
+static const std::pair<IrcStrId, const char*> ircMap[] =
+{
+	{ IrcStrId::invite, "INVITE" },
+	{ IrcStrId::join, "JOIN" },
+	{ IrcStrId::kick, "KICK" },
+	{ IrcStrId::lagTime, "LAGTIME" },
+	{ IrcStrId::mode, "MODE" },
+	{ IrcStrId::nick, "NICK" },
+	{ IrcStrId::part, "PART" },
+	{ IrcStrId::ping, "PING" },
+	{ IrcStrId::privMsg, "PRIVMSG" },
+	{ IrcStrId::quit, "QUIT" },
+	{ IrcStrId::who, "WHO" },
+	{ IrcStrId::whoIs, "WHOIS" }
+};
+
+enum class IrcNumId : uint16
+{
+	welcome = 1,
+	yourHost,
+	created,
+	myInfo,
+	bounce,
+	away = 301,
+	userHost,
+	isOn,
+	unAway = 305,
+	noAway,
+	whoIsUser = 311,
+	whoIsServer,
+	whoIsOperator,
+	whoAsUser,
+	endOfWho,
+	whoIsIdle = 317,
+	endOfWhoIs,
+	whoIsChannels,
+	list = 322,
+	listEnd,
+	channelModeIs,
+	uniqOpts,
+	noTopic = 331,
+	topic,
+	inviting = 341,
+	summoning,
+	inviteList = 346,
+	endOfInviteList,
+	exceptList,
+	endOfExceptList,
+	version = 351,
+	whoReply,
+	namReply,
+	links = 364,
+	endOfLinks,
+	endOfNames,
+	banList,
+	endOfBanList,
+	info = 371,
+	motd,
+	endOfInfo = 374,
+	motdStart,
+	endOfMotd,
+	youreOper = 381,
+	rehashing,
+	youreServer,
+	time = 391,
+	userStart,
+	users,
+	endOfUsers,
+	noUsers,
+	noSuchNick = 401,
+	noSuchServer,
+	noSuchChannel,
+	cannotSendToChan,
+	tooManyChannels,
+	wasNoSuchNick,
+	tooManyTargets,
+	noSuchService,
+	noOrigin,
+	noRecipient = 411,
+	noTextToSend,
+	noTopLevel,
+	wildTopLevel,
+	badMask,
+	unknownCommand = 421,
+	noMotd,
+	noAdmitInfo,
+	fileError,
+	noNicknameGiven = 431,
+	errOneUsNickname,
+	nicknameInUse,
+	nickCollision = 436,
+	unavailResource,
+	userNotInChannel = 441,
+	noLogin = 444
 };
 
 #endif // _ID_H

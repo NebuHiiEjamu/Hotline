@@ -26,16 +26,16 @@ namespace UserStatusEx
 	{
 		visible = 0,
 		away,
-		hotline = 3,
-		tide,
-		aniclient,
-		heidrun,
-		frogblast,
-		irc,
-		kdx,
+		isHL = 3,
+		isTide [[deprecated("Discontinued")]],
+		isAniClient [[deprecated("Discontinued")]],
+		isHeidrun [[deprecated("Discontinued")]],
+		isFrogblast [[deprecated("Discontinued")]],
+		isIRC,
+		isKDX,
 		inPing,
 		inLogin,
-		unixSock,
+		sockUnix,
 		all
 	};
 }
@@ -44,6 +44,10 @@ class Session : public std::enable_shared_from_this<Session>
 {
 public:
 	static constexpr uint32 trtpVersion = 0x10002;
+	static constexpr Size chatPrefixSize = 17;
+	static constexpr Size maxChatSize = 4096;
+	static constexpr Size maxGifIconSize = 32768;
+	static constexpr Size maxMessageSize = 2048;
 	
 	Session(uint16, HLConnectionPtr);
 	uint16 getId() const;
@@ -63,6 +67,7 @@ private:
 	HLConnectionPtr connection;
 	std::string nickname;
 	std::string autoReply;
+	ByteString key;
 	Timestamp uptime;
 	std::mutex mutex;
 	std::bitset<UserStatus::all> status;
@@ -70,9 +75,11 @@ private:
 	suint32 lastTransactionId;
 	suint32 replies;
 	uint16 id;
-	uint16 icon; // separate from account
+	[[deprecated("Superseded by custom icons")]] uint16 icon; // separate from account
 	uint16 color; // separate from account
 	uint16 version;
+	Cipher cipher;
+	Compression compression;
 };
 
 #endif // _SESSION_H

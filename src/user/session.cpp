@@ -72,11 +72,11 @@ std::string&& Session::getVersionString() const
 
 /*std::string_view&& Session::getClient() const
 {
-	if (statusEx.test(UserStatusEx::hotline)) return "Hotline";
-	if (statusEx.test(UserStatusEx::tide)) return "Panorama";
-	if (statusEx.test(UserStatusEx::aniclient)) return "AniClient";
-	if (statusEx.test(UserStatusEx::heidrun)) return "Heidrun";
-	if (statusEx.test(UserStatusEx::frogblast)) return "Frogblast";
+	if (statusEx.test(UserStatusEx::isHL)) return "Hotline";
+	if (statusEx.test(UserStatusEx::isTide)) return "Panorama";
+	if (statusEx.test(UserStatusEx::isAniClient)) return "AniClient";
+	if (statusEx.test(UserStatusEx::isHeidrun)) return "Heidrun";
+	if (statusEx.test(UserStatusEx::isFrogblast)) return "Frogblast";
 	return "";
 }*/
 

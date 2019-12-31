@@ -54,6 +54,8 @@ private:
 	std::mutex mutex;
 	uint16 port;
 	suint16 nextUserId;
+	Ciper cipher;
+	Compression compression;
 };
 
 #endif // _HLSERVER_H
