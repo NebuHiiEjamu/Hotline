@@ -237,7 +237,7 @@ implementation
 		writeword(ntobe(i));
 	end;
 
-	procedure THotlineStream.WriteBinary(s: rawbytestring);
+	procedure THotlineStream.WriteString(s: rawbytestring);
 	begin
 		WriteInteger(length(s));
 		writebuffer(s, length(s));
@@ -248,8 +248,8 @@ implementation
 		i: integer;
 	begin
 		for i := 0 to length(s) - 1 do
-			if s[i] = #13 then s[i] := #10;
-		result := s;
+			if s[i] = #13 then result[i] := #10
+			else result[i] := s[i];
 	end;
 
 	function LF2CR(s: rawbytestring): rawbytestring;
@@ -257,8 +257,8 @@ implementation
 		i: integer;
 	begin
 		for i := 0 to length(s) - 1 do
-			if s[i] = #10 then s[i] := #13;
-		result := s;
+			if s[i] = #10 then result[i] := #13
+			else result[i] := s[i];
 	end;
 
 	function EncStr(s: rawbytestring): tbytes;
