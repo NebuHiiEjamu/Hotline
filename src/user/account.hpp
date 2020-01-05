@@ -21,22 +21,29 @@ namespace Access
 		createFolder,
 		deleteFolder,
 		renameFolder,
+
 		moveFolder,
 		readChat,
 		sendChat,
+		// -- GLoarb ---
 		createChat,
 		closeChat,
+		// ---
 		showInList,
 		createUser,
 		deleteUser,
+		
 		openUser,
 		modifyUser,
+		// --- GLoarb ---
 		changeOwnPass,
 		sendPrivMsg,
+		// ---
 		newsReadArt,
 		newsPostArt,
 		disconUser,
 		cannotBeDiscon,
+		
 		getClientInfo,
 		uploadAnywhere,
 		anyName,
@@ -45,6 +52,7 @@ namespace Access
 		setFolderComment,
 		viewDropBoxes,
 		makeAlias,
+		
 		broadcast,
 		newsDeleteArt,
 		newsCreateCat,
@@ -53,6 +61,7 @@ namespace Access
 		newsDeleteFldr,
 		uploadFolder,
 		downloadFolder,
+		
 		sendMessage,
 		// --- GLoarb ---
 		fakeRed,
@@ -62,6 +71,7 @@ namespace Access
 		speakBefore,
 		refuseChat,
 		blockDownload,
+		
 		visible,
 		canViewInvisible,
 		canFlood,
@@ -78,22 +88,29 @@ namespace Access
 		downloadFile,
 		uploadFile,
 		deleteFile,
+
 		deleteUser,
 		createUser,
 		showInList,
+		// --- GLoarb ---
 		closeChat,
 		createChat,
+		// ---
 		sendChat,
 		readChat,
 		moveFolder,
+		
 		cannotBeDiscon,
 		disconUser,
 		newsPostArt,
 		newsReadArt,
+		// --- GLoarb ---
 		sendPrivMsg,
 		changeOwnPass,
+		// ---
 		modifyUser,
 		openUser,
+		
 		makeAlias,
 		viewDropBoxes,
 		setFolderComment,
@@ -102,6 +119,7 @@ namespace Access
 		anyName,
 		uploadAnywhere,
 		getClientInfo,
+		
 		downloadFolder,
 		uploadFolder,
 		newsDeleteFldr,
@@ -110,15 +128,19 @@ namespace Access
 		newsCreateCat,
 		newsDeleteArt,
 		broadcast,
-		blockDownload, // GLoarb
+		
+		// --- GLoarb ---
+		blockDownload,
 		refuseChat,
-		speakBefore, // GLoarb
-		changeIcon, // GLoarb
-		changeNick, // GLoarb
-		away, // GLoarb
-		fakeRed, // GLoarb
+		speakBefore,
+		changeIcon,
+		changeNick,
+		away,
+		fakeRed,
+		// ---
 		sendMessage,
-		 // --- GLoarb ---
+		
+		// --- GLoarb ---
 		postBefore,
 		adminSpector,
 		dontQueue,
@@ -163,32 +185,6 @@ namespace AccessEx
 	};
 }
 
-namespace FolderAccess
-{
-	enum
-	{
-		seeFolder = 0,
-		createFolders,
-		uploadFiles,
-		uploadFolders,
-		moveInItems,
-		aliasInItems,
-		duplicateInItems,
-		deleteFiles = 9,
-		deleteFolders,
-		moveOutItems,
-		seeFolderContent = 19,
-		downloadFiles,
-		downloadFolders,
-		aliasOutItems,
-		duplicateOutItems,
-		renameItems = 29,
-		setItemAttributes,
-		modifyFileContents,
-		all
-	};
-}
-
 class Account : public std::enable_shared_from_this<Account>
 {
 public:
@@ -215,12 +211,11 @@ private:
 	std::mutex mutex;
 	std::bitset<Access::all> access;
 	std::bitset<AccessEx::all> accessEx;
-	std::bitset<FolderAccess::all> folderAccess;
 	std::bitset<UserStatusEx::all> statusEx;
 	uint32 downloads;
 	uint32 uploads;
 	uint32 outBps;
-	[[deprecated("Superseded by custom icons")]] uint16 icon;
+	uint16 icon;
 	uint16 color;
 };
 

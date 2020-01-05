@@ -58,7 +58,9 @@ constexpr std::string_view HLServer::getDefaultDatabase()
 			`comment` TEXT,\
 			`md5` BLOB NOT NULL,\
 			`haval` BLOB NOT NULL,\
-			`sha1` BLOB NOT NULL\
+			`sha1` BLOB NOT NULL,\
+			`created` INTEGER,\
+			`modified` INTEGER\
 		);\
 		\
 		DROP TABLE IF EXISTS `news_bundles`;\

@@ -68,6 +68,7 @@ private:
 	std::string nickname;
 	std::string autoReply;
 	ByteString key;
+	ByteString gifIcon;
 	Timestamp uptime;
 	std::mutex mutex;
 	std::bitset<UserStatus::all> status;

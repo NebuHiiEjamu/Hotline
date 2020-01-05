@@ -1,6 +1,7 @@
 project(hlserver)
 
 set(SOURCE_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+	../3rdparty/haval.c
 	common/src/acceptor.cpp
 	common/src/connection.cpp
 	common/src/hive.cpp

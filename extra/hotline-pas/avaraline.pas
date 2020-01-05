@@ -1,0 +1,22 @@
+unit avaraline;
+
+interface
+
+	const
+		HTLC_HDR_ICON_GETLIST = $745;
+		HTLC_HDR_ICON_SET = $746;
+		HTLC_HDR_ICON_GET = $747;
+		HTLS_HDR_ICON_CHANGE = $748;
+		HTLS_HDR_LINK_LOGIN = $800;
+		HTLS_HDR_LINK_JOIN = $801;
+		HTLS_HDR_LINK_LEAVE = $802;
+		HTLS_HDR_LINK_PACKET = $803;
+		DATA_ICON_GIF = $300;
+		DATA_ICON_LIST = $301;
+		DATA_NEWSLIMIT = $320;
+		DATA_COLOR = $500;
+		DATA_PACKET = $600;
+
+implementation
+
+end.
