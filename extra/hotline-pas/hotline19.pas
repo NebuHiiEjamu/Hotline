@@ -16,8 +16,10 @@ interface
 		HTXF_TCPPORT = 5501;
 		HL_BOOKMARK_MAGIC = 'HTsc';
 
-		STATUS_AWAY = 1;
-		STATUS_ADMIN = 2;
+		STATUS_AWAY = 1 shl 0;
+		STATUS_ADMIN = 1 shl 1;
+		STATUS_NOMSG = 1 shl 2;
+		STATUS_NOCHAT = 1 shl 3;
 		
 		myTran_Error = 100;
 		myTran_GetMsgs = 101;

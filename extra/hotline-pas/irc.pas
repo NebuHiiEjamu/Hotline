@@ -3,7 +3,7 @@ unit irc;
 interface
 
 	const
-		DATA_IRC_OLD_NICK = $400;
+		DATA_IRC_OLD_NICK = $0400;
 
 		IRC_RPL_WELCOME = '001';
 		IRC_RPL_YOURHOST = '002';
