@@ -19,7 +19,7 @@ private:
 	std::string comment;
 	std::array<Byte, MD5_DIGEST_LENGTH> md5;
 	std::array<Byte, SHA_DIGEST_LENGTH> sha1;
-	ByteString haval;
+	std::array<Byte, 16> haval;
 	FilePath path;
 	Timestamp created;
 	Timestamp modified;

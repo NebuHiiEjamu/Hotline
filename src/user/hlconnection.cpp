@@ -25,13 +25,13 @@ void HLConnection::onAccept(const std::string_view&, uint16)
 		shared_from_this()));
 }
 
-void HLConnection::onSend(const Buffer&)
+void HLConnection::onSend(const ByteString&)
 {
 }
 
-void HLConnection::onReceive(Buffer &buffer)
+void HLConnection::onReceive(ByteString &data)
 {
-	HLInStream stream(buffer);
+	HLInStream stream(data);
 	LoggerRef log = HLServer::getInstance()->getLogger();
 	
 	if (stream.peek() == 'T')

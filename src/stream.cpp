@@ -90,7 +90,7 @@ template <class String> String&& HLInStream::readStringField()
 
 template<> void HLOutStream::write(bool b)
 {
-	internal.put(b ? 1 : 0);
+	write16(b ? 1 : 0);
 }
 
 template<> void HLOutStream::write(const FilePath &path)
@@ -106,7 +106,8 @@ template<> void HLOutStream::write(const FilePath &path)
 			slevel.find(":") == std::string::npos)
 		{
 			pad(2); // unknown
-			internal.put(slevel.size());
+			data.push_back(slevel.size());
+			seek(1);
 			write(slevel);
 		}
 	}
@@ -133,7 +134,7 @@ void HLOutStream::write(const std::string_view &s, Size padding = 0)
 	std::for_each(s2.begin(), s2.end(), [](char &c) { if (c == '\n') c = '\r'; });
 
 	write16(s2.size());
-	write(s2);
+	writeString(s2);
 	if (padding > s2.size()) pad(padding - s2.size());
 }
 
@@ -168,7 +169,7 @@ template <class String> void HLOutStream::write(Field field, const String &s)
 {
 	write(field);
 	write16(s.size());
-	write(s);
+	writeString(s);
 }
 
 void HLOutStream::write16(uint16 i)

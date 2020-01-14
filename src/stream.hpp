@@ -30,7 +30,7 @@ public:
 	template <class String> String&& readStringField();
 };
 
-class HLOutStream : public InStream
+class HLOutStream : public OutStream
 {
 public:
 	void write(bool);
@@ -41,8 +41,8 @@ public:
 	template <class T> void write(T);
 	template <class T> void write(Field, T);
 	template <class String> void write(Field, const String&);
-	void write16(uint16); // for ambiguity
-	void write32(uint32); // for ambiguity
+	void write16(uint16) override; // for ambiguity
+	void write32(uint32) override; // for ambiguity
 };
 
 #endif // _HLSTREAM_H
